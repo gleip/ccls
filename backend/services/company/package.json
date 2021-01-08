@@ -1,0 +1,25 @@
+{
+  "name": "ccls-backend-service-company",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "../../node_modules/ts-node/dist/bin.js -r dotenv/config index.ts",
+    "build": "../../../node_modules/.bin/tsc",
+    "build:proto": "../../node_modules/ts-node/dist/bin.js ../../bin/genFromProto.ts ./services/company",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "nodemailer": "^6.4.17",
+    "pg": "^8.5.1",
+    "sql-bricks": "^2.0.5"
+  },
+  "devDependencies": {
+    "@types/nodemailer": "^6.4.0",
+    "@types/pg": "^7.14.7",
+    "@types/sql-bricks": "^2.0.1"
+  }
+}
