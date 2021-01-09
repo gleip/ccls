@@ -1,6 +1,6 @@
 import { IEmployee } from 'root/domain';
 
-export type ICreateEmployee = Omit<
+export type ICreateEmployee = Pick<
   IEmployee,
-  'created' | 'updated' | 'deck' | 'account' | 'dust' | 'active' | 'id' | 'avatar'
+  'email' | 'name' | 'surname' | 'patronymic' | 'department' | 'role' | 'phone'
 >;

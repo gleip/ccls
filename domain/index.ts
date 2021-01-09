@@ -90,10 +90,3 @@ export interface IGenerateAuthResult {
   refresh: string;
   auth: IAuth;
 }
-
-export interface IAuthService {
-  getAuth(user: IUser): IGenerateAuthResult;
-  hashPassword(password: string): Promise<string>;
-  comparePassword(password: string, hash: string): Promise<boolean>;
-  generateVerificationCode(): string;
-}

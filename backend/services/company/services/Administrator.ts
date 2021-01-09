@@ -13,7 +13,7 @@ import {
 import { ServerUnaryCall, sendUnaryData } from '@grpc/grpc-js';
 import { inject, injectable } from 'inversify';
 import { TYPES } from '../inversify.types';
-import { IAdministratorService } from '../domain/service';
+import { IAdministratorService } from '../domain/service/Administrator/AdministratorService.interface';
 import { ILogger } from '../../../common/Logger/Logger.interface';
 import { IAdministrator } from 'root/domain';
 

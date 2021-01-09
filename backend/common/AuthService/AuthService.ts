@@ -2,8 +2,9 @@ import * as bcrypt from 'bcrypt';
 import * as jsonwebtoken from 'jsonwebtoken';
 import * as uuid from 'uuid';
 import { injectable } from 'inversify';
-import { IAuthService, IUser } from 'root/domain';
+import { IUser } from 'root/domain';
 import { promisify } from 'util';
+import { IAuthService } from './AuthService.interface';
 
 @injectable()
 export class AuthService implements IAuthService {

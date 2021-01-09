@@ -1,24 +1,24 @@
 import { injectable, inject } from 'inversify';
-import { TYPES } from '../inversify.types';
-import { IAdministratorRepository } from './ports/repository';
-import { IAdministratorService } from './service';
+import { TYPES } from '../../../inversify.types';
+import { IAdministratorRepository } from '../../ports/repository';
+import { IAdministratorService } from './AdministratorService.interface';
 
 // commands
-import { ICreateAdministrator } from './ports/command/administrator/create';
-import { IDeleteAdministrator } from './ports/command/administrator/delete';
-import { IUpdateAdministrator } from './ports/command/administrator/update';
-import { ISetAdministratorPassword } from './ports/command/administrator/setPassword';
-import { ISignInAdministrator } from './ports/command/administrator/signIn';
-import { IRefreshAdministratorToken } from './ports/command/administrator/refreshToken';
-import { ISetvVrificationCode } from './ports/command/administrator/setVerificationCode';
+import { ICreateAdministrator } from '../../ports/command/administrator/create';
+import { IDeleteUser } from '../../ports/command/delete.command';
+import { IUpdateAdministrator } from '../../ports/command/administrator/update';
+import { ISetPassword } from '../../ports/command/setPassword.command';
+import { ISignIn } from '../../ports/command/signIn.command';
+import { IRefreshToken } from '../../ports/command/refreshToken.command';
+import { ISetVrificationCode } from '../../ports/command/setVerificationCode.command';
 
 // queries
-import { IGetAdministrator } from './ports/query/getAdministrator';
+import { IGetAdministratorList } from '../../ports/query/getAdministratorList';
 
 // entities
-import { Administrator } from './aggregates/Administrator';
+import { Administrator } from '../../aggregates/Administrator';
 
-import { IAuthService } from 'root/domain';
+import { IAuthService } from 'root/backend/common/AuthService/AuthService.interface';
 import { INotifier } from 'common/Notifier/Notifier.interface';
 
 @injectable()
@@ -35,7 +35,7 @@ export class AdministratorService implements IAdministratorService {
     return administrator.serialize();
   }
 
-  public async delete({ id }: IDeleteAdministrator) {
+  public async delete({ id }: IDeleteUser) {
     return this.administratorRepository.delete(id);
   }
 
@@ -49,7 +49,7 @@ export class AdministratorService implements IAdministratorService {
     return administrator.serialize();
   }
 
-  public async setPassword({ email, password, verificationCode }: ISetAdministratorPassword) {
+  public async setPassword({ email, password, verificationCode }: ISetPassword) {
     const administrator = await this.administratorRepository.getByVerificationCode(email, verificationCode);
     if (!administrator) {
       throw new Error('Неверный проверочный код');
@@ -58,7 +58,7 @@ export class AdministratorService implements IAdministratorService {
     await this.administratorRepository.saveHashPassword(administrator.id, hash);
   }
 
-  public async setVerificationCode({ email }: ISetvVrificationCode) {
+  public async setVerificationCode({ email }: ISetVrificationCode) {
     const code = this.authService.generateVerificationCode();
     await this.administratorRepository.saveVerificationCode(email, code);
     await this.notifier.sendEmail({
@@ -68,7 +68,7 @@ export class AdministratorService implements IAdministratorService {
     });
   }
 
-  public async signIn({ email, password }: ISignInAdministrator) {
+  public async signIn({ email, password }: ISignIn) {
     const error = new Error('Неверный логин или пароль');
     const administrator = await this.administratorRepository.getByEmail(email);
     if (!administrator) {
@@ -87,7 +87,7 @@ export class AdministratorService implements IAdministratorService {
     return auth;
   }
 
-  public async refreshToken({ refreshToken }: IRefreshAdministratorToken) {
+  public async refreshToken({ refreshToken }: IRefreshToken) {
     const administrator = await this.administratorRepository.getByRefreshToken(refreshToken);
     if (!administrator) {
       throw new Error('Администратор не найден');
@@ -97,7 +97,7 @@ export class AdministratorService implements IAdministratorService {
     return auth;
   }
 
-  public async getList(params: IGetAdministrator) {
+  public async getList(params: IGetAdministratorList) {
     const result = await this.administratorRepository.getList();
     return result.map(administrator => administrator.serialize());
   }

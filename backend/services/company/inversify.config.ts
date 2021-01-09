@@ -7,10 +7,10 @@ import { LoggerService } from '../../common/Logger/LoggerService';
 import { IAdministratorsServer } from './grpc/administrators_grpc_pb';
 import { Administrator } from './services/Administrator';
 import { TYPES } from './inversify.types';
-import { IAdministratorService } from './domain/service';
-import { AdministratorService } from './domain/AdministratorService';
-import { IAuthService } from 'root/domain';
-import { AuthService } from '../../common/AuthService';
+import { IAdministratorService } from './domain/service/Administrator/AdministratorService.interface';
+import { AdministratorService } from './domain/service/Administrator/AdministratorService';
+import { IAuthService } from 'root/backend/common/AuthService/AuthService.interface';
+import { AuthService } from '../../common/AuthService/AuthService';
 import { INotifier } from 'common/Notifier/Notifier.interface';
 import { Notifier } from './services/Notifier';
 
