@@ -1,18 +1,47 @@
-import { IEmployee } from 'root/domain';
-import { IUserCommonOperations } from '../UserCommonOperations.interface';
+import { IEmployee, IAuth } from 'root/domain';
 
 // commands
 import { ICreateEmployee } from '../../ports/command/employee/create';
 import { IUpdateEmployee } from '../../ports/command/employee/update';
-import { IAddEmployeeToDepatrment } from '../../ports/command/addEmployeeToDepartmen.command';
-import { IRemoveEmployeeFromDepatrment } from '../../ports/command/removeEmployeeFromDepartment.command';
+import { IMoveEmployeeToAnotherSpace } from '../../ports/command/moveEmployeeToAnotherSpace.command';
 import { IGiveCard } from '../../ports/command/giveCard.command';
 import { IGiveLegendaryCard } from '../../ports/command/giveLegendaryCard.command';
+import { ISignIn } from '../../ports/command/signIn.command';
+import { IRefreshToken } from '../../ports/command/refreshToken.command';
+import { ISetPassword } from '../../ports/command/setPassword.command';
+import { ISetVrificationCode } from '../../ports/command/setVerificationCode.command';
+import { IDeactivateEmployee } from '../../ports/command/deactivate.command';
 
 // queries
 import { IGetEmployeeList } from '../../ports/query/getEmployeeList';
+import { IGetEmployee } from '../../ports/query/getEmployee';
 
-export interface IEmployeeService extends IUserCommonOperations {
+export interface IEmployeeService {
+  /**
+   * Войти в систему
+   */
+  signIn(params: ISignIn): Promise<IAuth>;
+
+  /**
+   * Обновить авторизационный токен
+   */
+  refreshToken(params: IRefreshToken): Promise<IAuth>;
+
+  /**
+   * Задать новый пароль
+   */
+  setPassword(params: ISetPassword): Promise<void>;
+
+  /**
+   * Задать новый проверочный код для смены пароля
+   */
+  setVerificationCode(params: ISetVrificationCode): Promise<void>;
+
+  /**
+   * Выключить пользователя
+   */
+  deactivate(params: IDeactivateEmployee): Promise<void>;
+
   /**
    * Создать нового сотрудника
    */
@@ -29,14 +58,14 @@ export interface IEmployeeService extends IUserCommonOperations {
   getList(params: IGetEmployeeList): Promise<NodeJS.ReadableStream>;
 
   /**
-   * Добавить сотрудника в департамент
+   * Получить сотрудника по id
    */
-  addEmployeeToDepartment(params: IAddEmployeeToDepatrment): Promise<void>;
+  get(params: IGetEmployee): Promise<IEmployee>;
 
-  /**
-   * Удалить сотрудника из департамента
+  /*
+   * Переместить сотрудника в другое пространство
    */
-  removeEmployeeFromDepartment(params: IRemoveEmployeeFromDepatrment): Promise<void>;
+  moveEmployeeToAnotherSpace(params: IMoveEmployeeToAnotherSpace): Promise<void>;
 
   /**
    * Подарить другому сотруднику обычную карточку

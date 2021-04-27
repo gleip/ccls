@@ -1,71 +1,50 @@
-export const enum UserRole {
+export const enum RoleType {
   Administrator = 'administrator',
   Employee = 'employee',
   Manager = 'manager',
 }
 
-export const enum CardRarity {
+export const enum RarityType {
   Common = 'common',
   Rare = 'rare',
   Legendary = 'legendary',
 }
 
 export interface IRole {
-  role: UserRole;
-  dust: IWallet;
-}
-
-export interface IUser {
   id: string;
-  active: boolean;
   name: string;
-  role: UserRole;
-  surname: string;
-  patronymic: string;
-  avatar?: string;
-  email: string;
-  phone?: string;
-  created: Date;
-  updated: Date;
+  role: RoleType;
+  flour: IWallet;
+  manager: boolean;
+  administrator: boolean;
 }
-
-export type IAdministrator = IUser;
 
 export interface IWallet {
   amount: number;
   updated: Date;
 }
 
-export interface IDepartment {
+export interface ISpace {
   id: string;
   name: string;
-  dust: IWallet;
-  employess: IEmployee[];
+  flour: IWallet;
+  active: boolean;
 }
 
 export interface ICard {
-  id: string;
+  id?: string;
   image: string;
-  rarity: CardRarity;
-  amount: number;
-}
-
-export type IAssignedEmployee = Pick<IEmployee, 'avatar' | 'name' | 'surname' | 'patronymic' | 'id'>;
-
-export interface IAssignedCard extends ICard {
-  assignedBy: IAssignedEmployee[];
-  assigned: Date;
-  created?: Date;
-}
-
-export interface ILegendaryCard extends ICard {
-  rarity: CardRarity.Legendary;
+  rarity: RarityType;
+  power: number;
+  assignedBy: string;
+  assignedDate: Date;
   created: Date;
 }
 
 export interface IDeck {
-  amount: number;
-  cards: IAssignedCard[];
+  power: number;
+  count: number;
+  cards: ICard[];
 }
 
 export interface IEmployeeDepartment {
@@ -73,11 +52,22 @@ export interface IEmployeeDepartment {
   name: string;
 }
 
-export interface IEmployee extends IUser {
-  department: IEmployeeDepartment;
-  account: IWallet;
-  dust: IWallet;
+export interface IEmployee {
+  id: string;
+  active: boolean;
+  name: string;
+  role: IRole;
+  surname: string;
+  patronymic: string;
+  confirmed: boolean
+  avatar?: string;
+  email: string;
+  phone?: string;
+  spaceId: string;
+  wallet: IWallet;
   deck: IDeck;
+  created: Date;
+  updated: Date;
 }
 
 export interface IAuth {

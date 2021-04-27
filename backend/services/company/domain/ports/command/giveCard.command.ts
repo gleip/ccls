@@ -1,6 +1,5 @@
-import { IAssignedCard } from 'root/domain';
+import { ICard } from 'root/domain';
 
-export type IGiveCard = Pick<IAssignedCard, 'amount' | 'assigned' | 'assignedBy' | 'rarity' | 'image'> & {
-  name: string;
-  description: string;
+export type IGiveCard = Pick<ICard, 'power' | 'image' | 'assignedBy' | 'rarity'> & {
+  employeeId: string;
 };

@@ -1,21 +1,26 @@
 import { IDeck } from 'root/domain';
 import { BaseEntity } from 'root/backend/common/BaseEntity';
-import { AssignedCard } from './AssignedCard';
+import { Card } from './Card';
 
 export class Deck implements BaseEntity<IDeck> {
-  private cards: AssignedCard[];
+  private cards: Card[];
   constructor({ cards }: Pick<IDeck, 'cards'>) {
-    this.cards = cards.map(card => new AssignedCard(card));
+    this.cards = cards.map(card => new Card(card));
   }
-  public serialize() {
+  public add(card: Card) {
+    this.cards.push(card);
+  }
+  public getView() {
     return {
-      amount: this.amount,
-      cards: this.cards.map(card => card.serialize()),
+      power: this.power,
+      count: this.count,
+      cards: this.cards.map(card => card.getView()),
     };
   }
-  get amount() {
-    return this.cards.reduce((acc, card) => {
-      return card.amount;
-    }, 0);
+  get power() {
+    return this.cards.reduce((power, card) => power + card.power, 0);
+  }
+  get count() {
+    return this.cards.length;
   }
 }

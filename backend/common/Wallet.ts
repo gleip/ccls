@@ -1,14 +1,14 @@
 import { IWallet } from 'root/domain';
-import { BaseEntity } from 'root/backend/common/BaseEntity';
+import { BaseEntity } from './BaseEntity';
 
 export class Wallet implements BaseEntity<IWallet> {
   private _amount: number;
-  private updated: Date;
+  private updated: Date | null;
   constructor({ amount, updated }: IWallet) {
     this._amount = amount;
     this.updated = updated;
   }
-  serialize() {
+  getView() {
     return {
       amount: this._amount,
       updated: this.updated,

@@ -1,21 +1,35 @@
-import { IRole, UserRole } from 'root/domain';
+import { IRole, RoleType } from 'root/domain';
 import { BaseEntity } from 'root/backend/common/BaseEntity';
-import { Wallet } from './Wallet';
+import { FlourStorage } from 'common/FlourStorage';
 
-export class Role implements BaseEntity<IRole> {
-  private dust: Wallet;
-  private role: UserRole;
-  constructor({ dust, role }: IRole) {
-    this.dust = new Wallet(dust);
+export class Role extends FlourStorage implements BaseEntity<IRole> {
+  private id: string;
+  private role: RoleType;
+  private name: string;
+  private manager: boolean;
+  private administrator: boolean;
+  constructor({ id, role, name, manager, administrator, flour }: IRole) {
+    super(flour);
+    this.id = id;
     this.role = role;
+    this.name = name;
+    this.manager = manager;
+    this.administrator = administrator;
   }
-  public setDust(value: number) {
-    this.dust.ammount = value;
+  public isManager() {
+    return this.manager;
   }
-  public serialize() {
+  public isAdministrator() {
+    return this.administrator;
+  }
+  public getView() {
     return {
-      dust: this.dust.serialize(),
+      id: this.id,
       role: this.role,
+      name: this.name,
+      manager: this.manager,
+      administrator: this.administrator,
+      flour: this.flour.getView(),
     };
   }
 }

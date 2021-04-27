@@ -2,9 +2,9 @@ import * as bcrypt from 'bcrypt';
 import * as jsonwebtoken from 'jsonwebtoken';
 import * as uuid from 'uuid';
 import { injectable } from 'inversify';
-import { IUser } from 'root/domain';
 import { promisify } from 'util';
 import { IAuthService } from './AuthService.interface';
+import { Employee } from 'services/company/domain/aggregates';
 
 @injectable()
 export class AuthService implements IAuthService {
@@ -26,8 +26,9 @@ export class AuthService implements IAuthService {
     this.JWT_TOKEN_TTL_IN_SECOND = +process.env.JWT_TOKEN_TTL_IN_SECOND;
     this.REFRESH_TOKEN_TTL_IN_SECOND = +process.env.REFRESH_TOKEN_TTL_IN_SECOND;
   }
-  public getAuth(params: IUser) {
-    const token = jsonwebtoken.sign(params, this.JWT_TOKEN_SECRET, {
+  public getAuth(employee: Employee) {
+    const { id, role, spaceId, confirmed, email } = employee.getView();
+    const token = jsonwebtoken.sign({ id, role, spaceId, confirmed, email }, this.JWT_TOKEN_SECRET, {
       algorithm: 'HS256',
       expiresIn: this.JWT_TOKEN_TTL_IN_SECOND,
     });

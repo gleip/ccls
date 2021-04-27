@@ -1,8 +1,8 @@
 export const TYPES = {
-  AdministratorRepository: Symbol.for('IAdministratorRepository'),
-  CompanyRepository: Symbol.for('ICompanyRepository'),
+  EmployeeRepository: Symbol.for('IEmployeeRepository'),
+  LegendaryCardRepository: Symbol.for('ILegendaryCardRepository'),
   AdministratorService: Symbol.for('IAdministratorService'),
-  CompanyService: Symbol.for('ICompanyService'),
+  EmployeeService: Symbol.for('IEmployeeService'),
   AuthService: Symbol.for('IAuthService'),
   LoggerService: Symbol.for('ILogger'),
   AdministratorGRPCService: Symbol.for('IAdministratorsServer'),

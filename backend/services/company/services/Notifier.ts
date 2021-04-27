@@ -28,12 +28,12 @@ export class Notifier implements INotifier {
   }
 
   @errorHandling('Не удалось отправить сообщение клиенту')
-  public async sendEmail({ email, subject, text }: IParamsSendEmail) {
+  public async sendVerificationCode({ email, code }: IParamsSendEmail) {
     await this.MailService.sendMail({
-      subject: subject,
+      subject: 'Секретный код для смены пароля',
       to: email,
       from: process.env.SMTP_SERVER_USERNAME,
-      text: text,
+      text: `Что бы сменить пароль введите этот код: ${code}`,
     });
   }
 }
