@@ -8,7 +8,7 @@ import { TYPES } from './inversify.types';
 import { IAdministratorService } from './domain/service/Administrator/AdministratorService.interface';
 import { AdministratorService } from './domain/service/Administrator/AdministratorService';
 import { IAuthService } from 'root/backend/common/AuthService/AuthService.interface';
-import { AuthService } from '../../common/AuthService/AuthService';
+import { AuthService } from '../../common/AuthService/implementation/AuthService';
 import { INotifier } from 'common/Notifier/Notifier.interface';
 import { Notifier } from './services/Notifier';
 

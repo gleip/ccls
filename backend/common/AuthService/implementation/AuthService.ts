@@ -1,17 +1,16 @@
-import * as bcrypt from 'bcrypt';
 import * as jsonwebtoken from 'jsonwebtoken';
-import * as uuid from 'uuid';
 import { injectable } from 'inversify';
 import { promisify } from 'util';
-import { IAuthService } from './AuthService.interface';
+import { IAuthService, IHashedPassword } from '../AuthService.interface';
 import { Employee } from 'services/company/domain/aggregates';
+import { pbkdf2, randomBytes, randomUUID } from 'crypto';
 
 @injectable()
 export class AuthService implements IAuthService {
   private JWT_TOKEN_SECRET: string;
   private JWT_TOKEN_TTL_IN_SECOND: number;
   private REFRESH_TOKEN_TTL_IN_SECOND: number;
-  private getHash = promisify(bcrypt.hash);
+  private getHash = promisify(pbkdf2);
   constructor() {
     if (
       !process.env.JWT_TOKEN_SECRET ||
@@ -32,7 +31,7 @@ export class AuthService implements IAuthService {
       algorithm: 'HS256',
       expiresIn: this.JWT_TOKEN_TTL_IN_SECOND,
     });
-    const refresh = uuid.v4();
+    const refresh = randomUUID();
     const expired = new Date();
     expired.setSeconds(expired.getSeconds() + this.JWT_TOKEN_TTL_IN_SECOND);
     return {
@@ -47,11 +46,14 @@ export class AuthService implements IAuthService {
       },
     };
   }
-  public async comparePassword(password: string, hash: string) {
-    return bcrypt.compare(password, hash);
+  public async comparePassword(password: string, { hash, salt }: IHashedPassword) {
+    const hashedPassword = await this.getHash(password, salt, 10000, 512, 'sha512');
+    return hashedPassword.toString('hex') === hash;
   }
   public async hashPassword(password: string) {
-    return this.getHash(password, 10);
+    const salt = randomBytes(32);
+    const hash = await this.getHash(password, salt, 10000, 512, 'sha512');
+    return { hash: hash.toString('hex'), salt: salt.toString('hex') };
   }
   public generateVerificationCode() {
     return Math.floor(100000 + Math.random() * 900000).toString();
