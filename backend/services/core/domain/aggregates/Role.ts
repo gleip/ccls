@@ -1,17 +1,17 @@
 import { IRole, RoleType } from 'root/domain';
 import { BaseEntity } from 'root/backend/common/BaseEntity';
-import { FlourStorage } from 'common/FlourStorage';
+import { DustStorage } from './DustStorage';
 
-export class Role extends FlourStorage implements BaseEntity<IRole> {
+export class Role extends DustStorage implements BaseEntity<IRole> {
   private id: string;
-  private role: RoleType;
+  private type: RoleType;
   private name: string;
   private manager: boolean;
   private administrator: boolean;
-  constructor({ id, role, name, manager, administrator, flour }: IRole) {
-    super(flour);
+  constructor({ id, type, name, manager, administrator, dust }: IRole) {
+    super(dust);
     this.id = id;
-    this.role = role;
+    this.type = type;
     this.name = name;
     this.manager = manager;
     this.administrator = administrator;
@@ -25,11 +25,11 @@ export class Role extends FlourStorage implements BaseEntity<IRole> {
   public getView() {
     return {
       id: this.id,
-      role: this.role,
+      type: this.type,
       name: this.name,
       manager: this.manager,
       administrator: this.administrator,
-      flour: this.flour.getView(),
+      dust: this.dust.getView(),
     };
   }
 }

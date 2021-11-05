@@ -1,12 +1,14 @@
 import { IWallet } from 'root/domain';
-import { BaseEntity } from './BaseEntity';
+import { BaseEntity } from '../../../../common/BaseEntity';
+
+type CreateWalletParam = Pick<IWallet, 'amount'> & Partial<Pick<IWallet, 'updated'>>;
 
 export class Wallet implements BaseEntity<IWallet> {
   private _amount: number;
-  private updated: Date | null;
-  constructor({ amount, updated }: IWallet) {
+  private updated: Date;
+  constructor({ amount, updated }: CreateWalletParam) {
     this._amount = amount;
-    this.updated = updated;
+    this.updated = updated || new Date();
   }
   getView() {
     return {

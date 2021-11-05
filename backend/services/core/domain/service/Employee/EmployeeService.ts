@@ -1,7 +1,7 @@
 import { IAuthService } from 'common/AuthService/AuthService.interface';
 import { INotifier } from 'common/Notifier/Notifier.interface';
 import { inject, injectable } from 'inversify';
-import { TYPES } from 'services/company/inversify.types';
+import { TYPES } from 'services/core/inversify.types';
 import { IEmployeeService } from './EmployeeService.interface';
 import { Employee, Role, Card } from '../../aggregates';
 

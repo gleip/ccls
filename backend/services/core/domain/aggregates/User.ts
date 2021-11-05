@@ -1,6 +1,6 @@
-import { IEmployee } from 'root/domain';
+import { IUser } from 'root/domain';
 import { BaseEntity } from 'root/backend/common/BaseEntity';
-import { Wallet } from 'root/backend/common/Wallet';
+import { Wallet } from './Wallet';
 import { Deck } from './Deck';
 import { Role } from './Role';
 
@@ -8,25 +8,30 @@ import { Role } from './Role';
 import { ICreateEmployee } from '../ports/command/employee/create';
 import { Card } from './Card';
 
-export class Employee implements BaseEntity<IEmployee> {
+interface IPassword {
+  hash: string;
+  salt: string;
+}
+
+export class User implements BaseEntity<IUser> {
   private _id: string;
   private active: boolean;
   private confirmed: boolean;
   private _name: string;
   private _surname: string;
   private _patronymic: string;
-  private _avatar: string;
+  private _avatar?: string;
   private _email: string;
-  private _password: string;
+  private _password: IPassword;
   private _phone?: string;
   private created: Date;
   private updated: Date;
   private _spaceId: string;
   private _role: Role;
-  private wallet: Wallet;
+  private coins: Wallet;
   private deck: Deck;
   constructor({
-    wallet,
+    coins,
     deck,
     role,
     spaceId,
@@ -42,7 +47,7 @@ export class Employee implements BaseEntity<IEmployee> {
     surname,
     updated,
     phone,
-  }: IEmployee & { password: string }) {
+  }: IUser & { password: IPassword }) {
     this._id = id;
     this.active = active;
     this.confirmed = confirmed;
@@ -57,21 +62,21 @@ export class Employee implements BaseEntity<IEmployee> {
     this._phone = phone;
     this._role = new Role(role);
     this._spaceId = spaceId;
-    this.wallet = new Wallet(wallet);
+    this.coins = new Wallet(coins);
     this.deck = new Deck(deck);
   }
   static create({ id, spaceId, email, name, patronymic, role, surname, phone }: ICreateEmployee) {
     const date = new Date();
-    return new Employee({
+    return new User({
       id,
       active: true,
       confirmed: false,
-      wallet: { amount: 0, updated: date },
+      coins: { amount: 0, updated: date },
       deck: { count: 0, power: 0, cards: [] },
       avatar: '',
       spaceId,
       email,
-      password: '',
+      password: { hash: '', salt: '' },
       name,
       surname,
       patronymic,
@@ -83,7 +88,7 @@ export class Employee implements BaseEntity<IEmployee> {
   }
   public deactivate() {
     this.active = false;
-    this.wallet.decrease(this.wallet.ammount);
+    this.coins.decrease(this.coins.ammount);
     this.updated = new Date();
   }
   public activate() {
@@ -91,7 +96,7 @@ export class Employee implements BaseEntity<IEmployee> {
     this.updated = new Date();
   }
   public confirm() {
-    if (this.confirm) {
+    if (this.confirmed) {
       return;
     }
     this.confirmed = true;
@@ -100,7 +105,7 @@ export class Employee implements BaseEntity<IEmployee> {
   public isActive() {
     return this.active;
   }
-  public giveCard(card: Card) {
+  public putCard(card: Card) {
     this.deck.add(card);
     this.updated = new Date();
   }
@@ -119,7 +124,7 @@ export class Employee implements BaseEntity<IEmployee> {
       phone: this._phone,
       spaceId: this._spaceId,
       role: this._role.getView(),
-      wallet: this.wallet.getView(),
+      coins: this.coins.getView(),
       deck: this.deck.getView(),
     };
   }
@@ -132,7 +137,7 @@ export class Employee implements BaseEntity<IEmployee> {
   get id() {
     return this._id;
   }
-  set password(password: string) {
+  set password(password: IPassword) {
     this._password = password;
     this.updated = new Date();
   }

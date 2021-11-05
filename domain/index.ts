@@ -13,8 +13,8 @@ export const enum RarityType {
 export interface IRole {
   id: string;
   name: string;
-  role: RoleType;
-  flour: IWallet;
+  type: RoleType;
+  dust: IWallet;
   manager: boolean;
   administrator: boolean;
 }
@@ -27,7 +27,7 @@ export interface IWallet {
 export interface ISpace {
   id: string;
   name: string;
-  flour: IWallet;
+  dust: IWallet;
   active: boolean;
 }
 
@@ -47,24 +47,19 @@ export interface IDeck {
   cards: ICard[];
 }
 
-export interface IEmployeeDepartment {
-  id: string;
-  name: string;
-}
-
-export interface IEmployee {
+export interface IUser {
   id: string;
   active: boolean;
   name: string;
   role: IRole;
   surname: string;
   patronymic: string;
-  confirmed: boolean
+  confirmed: boolean;
   avatar?: string;
   email: string;
   phone?: string;
   spaceId: string;
-  wallet: IWallet;
+  coins: IWallet;
   deck: IDeck;
   created: Date;
   updated: Date;

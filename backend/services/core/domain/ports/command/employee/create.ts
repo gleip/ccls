@@ -1,6 +1,6 @@
-import { IEmployee } from 'root/domain';
+import { IUser } from 'root/domain';
 
 export type ICreateEmployee = Pick<
-  IEmployee,
+  IUser,
   'id' | 'email' | 'name' | 'surname' | 'patronymic' | 'spaceId' | 'role' | 'phone'
 >;

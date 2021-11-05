@@ -1,13 +1,13 @@
 import { ISpace } from 'root/domain';
 import { BaseEntity } from 'root/backend/common/BaseEntity';
-import { FlourStorage } from 'root/backend/common/FlourStorage';
+import { DustStorage } from './DustStorage';
 
-export class Space extends FlourStorage implements BaseEntity<ISpace> {
+export class Space extends DustStorage implements BaseEntity<ISpace> {
   private id: string;
   private name: string;
   private active: boolean;
-  constructor({ active, flour, id, name }: ISpace) {
-    super(flour);
+  constructor({ active, dust, id, name }: ISpace) {
+    super(dust);
     this.id = id;
     this.name = name;
     this.active = active;
@@ -19,7 +19,7 @@ export class Space extends FlourStorage implements BaseEntity<ISpace> {
     return {
       id: this.id,
       name: this.name,
-      flour: this.flour.getView(),
+      dust: this.dust.getView(),
       active: this.active,
     };
   }

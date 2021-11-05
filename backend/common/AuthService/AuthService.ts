@@ -2,7 +2,7 @@ import * as jsonwebtoken from 'jsonwebtoken';
 import { injectable } from 'inversify';
 import { promisify } from 'util';
 import { IAuthService, IHashedInfo } from './AuthService.interface';
-import { IEmployee } from '../../../domain';
+import { User } from '../../services/core/domain/aggregates/User';
 import { pbkdf2, randomBytes, randomUUID } from 'crypto';
 import { envValidate } from '../../helpers';
 
@@ -25,13 +25,8 @@ export class AuthService implements IAuthService {
       process.env.REFRESH_TOKEN_TTL_IN_SECOND,
     );
   }
-  public getAuth({
-    id,
-    role,
-    spaceId,
-    confirmed,
-    email,
-  }: Pick<IEmployee, 'id' | 'role' | 'spaceId' | 'confirmed' | 'email'>) {
+  public getAuth(user: User) {
+    const { id, role, spaceId, confirmed, email } = user.getView();
     const token = jsonwebtoken.sign({ id, role, spaceId, confirmed, email }, this.JWT_TOKEN_SECRET, {
       algorithm: this.jwtAlgorithm,
       expiresIn: this.JWT_TOKEN_TTL_IN_SECOND,
