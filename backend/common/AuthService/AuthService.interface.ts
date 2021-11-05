@@ -1,14 +1,14 @@
 import { IGenerateAuthResult } from "root/domain";
-import { Employee } from "services/company/domain/aggregates";
+import { IEmployee } from "../../../domain";
 
-export interface IHashedPassword {
+export interface IHashedInfo {
   hash: string;
   salt: string;
 }
 
 export interface IAuthService {
-  getAuth(user: Employee): IGenerateAuthResult;
-  hashPassword(password: string): Promise<IHashedPassword>;
-  comparePassword(password: string, hash: IHashedPassword): Promise<boolean>;
+  getAuth(user: IEmployee): IGenerateAuthResult;
+  getHash(password: string): Promise<IHashedInfo>;
+  compare(password: string, hash: IHashedInfo): Promise<boolean>;
   generateVerificationCode(): string;
 }
