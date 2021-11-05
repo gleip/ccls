@@ -6,8 +6,8 @@ export class Card implements BaseEntity<ICard> {
   private image: string;
   private rarity: RarityType;
   private _power: number;
-  private _assignedBy: string;
-  private assignedDate: Date;
+  private _assignedBy?: string;
+  private _assignedDate?: Date;
   private created: Date;
 
   constructor({ power, created, id, image, rarity, assignedDate, assignedBy }: ICard) {
@@ -16,7 +16,7 @@ export class Card implements BaseEntity<ICard> {
     this.rarity = rarity;
     this._power = power;
     this._assignedBy = assignedBy;
-    this.assignedDate = assignedDate;
+    this._assignedDate = assignedDate;
     this.created = created;
   }
   public getView() {
@@ -26,7 +26,7 @@ export class Card implements BaseEntity<ICard> {
       rarity: this.rarity,
       power: this.power,
       assignedBy: this._assignedBy,
-      assignedDate: this.assignedDate,
+      assignedDate: this._assignedDate,
       created: this.created,
     };
   }
@@ -44,5 +44,8 @@ export class Card implements BaseEntity<ICard> {
   }
   set assignedBy(assignedBy: string) {
     this._assignedBy = assignedBy;
+  }
+  set assignedDate(assignedDate: Date) {
+    this._assignedDate = assignedDate;
   }
 }

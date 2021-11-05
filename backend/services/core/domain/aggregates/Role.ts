@@ -1,6 +1,9 @@
 import { IRole, RoleType } from 'root/domain';
 import { BaseEntity } from 'root/backend/common/BaseEntity';
 import { DustStorage } from './DustStorage';
+import { CreateWalletParam } from './Wallet';
+
+type CreateRoleParam = Omit<IRole, 'manager' | 'administrator' | 'dust'> & { dust: CreateWalletParam };
 
 export class Role extends DustStorage implements BaseEntity<IRole> {
   private id: string;
@@ -8,13 +11,13 @@ export class Role extends DustStorage implements BaseEntity<IRole> {
   private name: string;
   private manager: boolean;
   private administrator: boolean;
-  constructor({ id, type, name, manager, administrator, dust }: IRole) {
+  constructor({ id, type, name, dust }: CreateRoleParam) {
     super(dust);
     this.id = id;
     this.type = type;
     this.name = name;
-    this.manager = manager;
-    this.administrator = administrator;
+    this.manager = type === RoleType.Manager;
+    this.administrator = type === RoleType.Administrator;
   }
   public isManager() {
     return this.manager;

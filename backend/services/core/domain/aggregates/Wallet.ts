@@ -1,16 +1,22 @@
 import { IWallet } from 'root/domain';
 import { BaseEntity } from '../../../../common/BaseEntity';
 
-type CreateWalletParam = Pick<IWallet, 'amount'> & Partial<Pick<IWallet, 'updated'>>;
+export type CreateWalletParam = Pick<IWallet, 'amount'> & Partial<Pick<IWallet, 'updated'>>;
 
 export class Wallet implements BaseEntity<IWallet> {
   private _amount: number;
   private updated: Date;
   constructor({ amount, updated }: CreateWalletParam) {
-    this._amount = amount;
+    this._amount = this.validate(amount);
     this.updated = updated || new Date();
   }
-  getView() {
+  private validate(value: number) {
+    if (value < 0) {
+      throw new Error('Сумма в кошельке не может быть меньше 0');
+    }
+    return value;
+  }
+  public getView() {
     return {
       amount: this._amount,
       updated: this.updated,
@@ -31,7 +37,7 @@ export class Wallet implements BaseEntity<IWallet> {
     return this._amount;
   }
   set ammount(amount: number) {
-    this._amount = amount;
+    this._amount = this.validate(amount);
     this.updated = new Date();
   }
 }

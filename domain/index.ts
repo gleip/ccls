@@ -36,8 +36,8 @@ export interface ICard {
   image: string;
   rarity: RarityType;
   power: number;
-  assignedBy: string;
-  assignedDate: Date;
+  assignedBy?: string;
+  assignedDate?: Date;
   created: Date;
 }
 

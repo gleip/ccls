@@ -1,21 +1,21 @@
 import { IWallet } from 'root/domain';
-import { Wallet } from './Wallet';
+import { Wallet, CreateWalletParam } from './Wallet';
 
 export class DustStorage {
   protected dust: Wallet;
-  constructor(params: IWallet) {
+  constructor(params: CreateWalletParam) {
     this.dust = new Wallet(params);
   }
-  public increaseduste(amount: number) {
+  public increaseDust(amount: number) {
     this.dust.increase(amount);
   }
-  public decreaseduste(amount: number) {
+  public decreaseDust(amount: number) {
     this.dust.decrease(amount);
   }
-  public getdust() {
+  public getDust() {
     return this.dust.ammount;
   }
-  public setdustToZero() {
+  public setDustToZero() {
     this.dust.decrease(this.dust.ammount);
   }
 }
