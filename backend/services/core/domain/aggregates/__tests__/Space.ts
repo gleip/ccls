@@ -1,6 +1,6 @@
 import { Space } from '../Space';
 
-describe('Методы работы с пространством', () => {
+describe('Методы работы с "Пространством"', () => {
   const createParam = { id: '1', name: 'Разработка', active: true, dust: { amount: 1000 } };
   test('Пространство успешно создается', () => {
     const space = new Space(createParam);

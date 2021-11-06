@@ -4,11 +4,17 @@ import { Card } from './Card';
 
 export class Deck implements BaseEntity<IDeck> {
   private cards: Card[];
-  constructor({ cards }: Pick<IDeck, 'cards'>) {
+  private _power: number;
+  private _count: number;
+  constructor({ cards, count, power }: IDeck) {
     this.cards = cards.map(card => new Card(card));
+    this._count = count;
+    this._power = power;
   }
   public add(card: Card) {
     this.cards.push(card);
+    this._power += card.power;
+    this._count++;
   }
   public getView() {
     return {
@@ -18,9 +24,9 @@ export class Deck implements BaseEntity<IDeck> {
     };
   }
   get power() {
-    return this.cards.reduce((power, card) => power + card.power, 0);
+    return this._power;
   }
   get count() {
-    return this.cards.length;
+    return this._count;
   }
 }

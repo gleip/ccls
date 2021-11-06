@@ -36,8 +36,6 @@ describe('Генерация хешей, объектов авторизации
         spaceId: '1',
         role: {
           id: '1',
-          administrator: false,
-          manager: false,
           name: 'Сотрудник',
           type: RoleType.Employee,
           dust: { amount: 1000, updated: new Date() },
@@ -55,8 +53,6 @@ describe('Генерация хешей, объектов авторизации
           id: '1',
           type: 'employee',
           name: 'Сотрудник',
-          manager: false,
-          administrator: false,
           dust: { amount: 1000 },
         },
         spaceId: '1',

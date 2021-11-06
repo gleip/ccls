@@ -15,8 +15,6 @@ export interface IRole {
   name: string;
   type: RoleType;
   dust: IWallet;
-  manager: boolean;
-  administrator: boolean;
 }
 
 export interface IWallet {

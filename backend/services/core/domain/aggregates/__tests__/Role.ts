@@ -1,7 +1,7 @@
 import { RoleType } from 'root/domain';
 import { Role } from '../Role';
 
-describe('Методы работы с ролью', () => {
+describe('Методы работы с "Ролью"', () => {
   const createParam = {
     id: '1',
     name: 'Сотрудник',

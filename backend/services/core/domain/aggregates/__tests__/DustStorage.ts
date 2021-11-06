@@ -1,6 +1,6 @@
 import { DustStorage } from '../DustStorage';
 
-describe('Проверка методов работы с хранилищем пыли', () => {
+describe('Методов работы с "Хранилищем пыли"', () => {
   test('Успешно создается хранилище пыли', () => {
     const dustStorage = new DustStorage({ amount: 1000 });
     expect(dustStorage.getDust()).toBe(1000);

@@ -1,7 +1,7 @@
 import { Wallet } from '../Wallet';
 import { setTimeout } from 'timers/promises';
 
-describe('Методы работы с кошельком', () => {
+describe('Методы работы с "Кошельком"', () => {
   const lessThanZeroError = new Error('Сумма в кошельке не может быть меньше 0');
   test('Успешно создается новый кошелек', () => {
     const date = new Date();
