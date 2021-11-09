@@ -1,4 +1,3 @@
-import { IWallet } from 'root/domain';
 import { Wallet, CreateWalletParam } from './Wallet';
 
 export class DustStorage {

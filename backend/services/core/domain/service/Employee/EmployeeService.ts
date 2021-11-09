@@ -6,9 +6,9 @@ import { IEmployeeService } from './EmployeeService.interface';
 import { Employee, Role, Card } from '../../aggregates';
 
 // Commands
-import { ICreateEmployee } from '../../ports/command/employee/create';
+import { ICreateEmployee } from '../../ports/command/user/create';
 import { IDeactivateEmployee } from '../../ports/command/deactivate.command';
-import { IUpdateEmployee } from '../../ports/command/employee/update';
+import { IUpdateEmployee } from '../../ports/command/user/update';
 import { IEmployeeRepository, ILegendaryCardRepository } from '../../ports/repository';
 import { ISignIn } from '../../ports/command/signIn.command';
 import { IRefreshToken } from '../../ports/command/refreshToken.command';

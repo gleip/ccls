@@ -1,8 +1,8 @@
 import { IEmployee, IAuth } from 'root/domain';
 
 // commands
-import { ICreateEmployee } from '../../ports/command/employee/create';
-import { IUpdateEmployee } from '../../ports/command/employee/update';
+import { ICreateEmployee } from '../../ports/command/user/create';
+import { IUpdateEmployee } from '../../ports/command/user/update';
 import { IMoveEmployeeToAnotherSpace } from '../../ports/command/moveEmployeeToAnotherSpace.command';
 import { IGiveCard } from '../../ports/command/giveCard.command';
 import { IGiveLegendaryCard } from '../../ports/command/giveLegendaryCard.command';

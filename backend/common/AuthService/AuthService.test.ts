@@ -27,7 +27,6 @@ describe('Генерация хешей, объектов авторизации
   describe('Получени объекта авторизации пользователя', () => {
     const authUserInfo = auth.getAuth(
       User.create({
-        id: '1',
         email: 'test@test.ru',
         name: 'Иван',
         patronymic: 'Иванович',
@@ -38,7 +37,7 @@ describe('Генерация хешей, объектов авторизации
           id: '1',
           name: 'Сотрудник',
           type: RoleType.Employee,
-          dust: { amount: 1000, updated: new Date() },
+          dust: { amount: 1000 },
         },
       }),
     );
@@ -48,7 +47,6 @@ describe('Генерация хешей, объектов авторизации
     test('В токене зашифрованны необходимые данные для авторизации пользователя', () => {
       const data = jsonwebtoken.decode(authUserInfo.auth.token);
       expect(data).toMatchObject({
-        id: '1',
         role: {
           id: '1',
           type: 'employee',

@@ -1,17 +1,20 @@
-import { IUser } from 'root/domain';
 import { BaseEntity } from 'root/backend/common/BaseEntity';
+import { IUser } from 'root/domain';
 import { Wallet } from './Wallet';
 import { Deck } from './Deck';
-import { Role } from './Role';
+import { Role, CreateRoleParam } from './Role';
+import { Card } from './Card';
+import { randomUUID } from 'crypto';
 
 // commands
-import { ICreateEmployee } from '../ports/command/employee/create';
-import { Card } from './Card';
+import { CreateUser } from '../ports/command/user/create';
 
 interface IPassword {
   hash: string;
   salt: string;
 }
+
+type UserCreateParam = Omit<IUser, 'role'> & { role: CreateRoleParam };
 
 export class User implements BaseEntity<IUser> {
   private _id: string;
@@ -28,7 +31,7 @@ export class User implements BaseEntity<IUser> {
   private updated: Date;
   private _spaceId: string;
   private _role: Role;
-  private coins: Wallet;
+  private _coins: Wallet;
   private deck: Deck;
   constructor({
     coins,
@@ -47,7 +50,7 @@ export class User implements BaseEntity<IUser> {
     surname,
     updated,
     phone,
-  }: IUser & { password: IPassword }) {
+  }: UserCreateParam & { password: IPassword }) {
     this._id = id;
     this.active = active;
     this.confirmed = confirmed;
@@ -62,13 +65,13 @@ export class User implements BaseEntity<IUser> {
     this._phone = phone;
     this._role = new Role(role);
     this._spaceId = spaceId;
-    this.coins = new Wallet(coins);
+    this._coins = new Wallet(coins);
     this.deck = new Deck(deck);
   }
-  static create({ id, spaceId, email, name, patronymic, role, surname, phone }: ICreateEmployee) {
+  static create({ spaceId, email, name, patronymic, role, surname, phone }: CreateUser) {
     const date = new Date();
     return new User({
-      id,
+      id: randomUUID(),
       active: true,
       confirmed: false,
       coins: { amount: 0, updated: date },
@@ -88,7 +91,7 @@ export class User implements BaseEntity<IUser> {
   }
   public deactivate() {
     this.active = false;
-    this.coins.decrease(this.coins.ammount);
+    this._coins.decrease(this._coins.ammount);
     this.updated = new Date();
   }
   public activate() {
@@ -105,9 +108,22 @@ export class User implements BaseEntity<IUser> {
   public isActive() {
     return this.active;
   }
+  public isConfirmed() {
+    return this.confirmed;
+  }
   public putCard(card: Card) {
     this.deck.add(card);
+    this._coins.increase(card.power);
     this.updated = new Date();
+  }
+  public writeOffDust(amount: number) {
+    this._role.decreaseDust(amount);
+  }
+  public isAdministrator() {
+    return this._role.isAdministrator();
+  }
+  public isManager() {
+    return this._role.isManager();
   }
   public getView() {
     return {
@@ -124,7 +140,7 @@ export class User implements BaseEntity<IUser> {
       phone: this._phone,
       spaceId: this._spaceId,
       role: this._role.getView(),
-      coins: this.coins.getView(),
+      coins: this._coins.getView(),
       deck: this.deck.getView(),
     };
   }
@@ -132,10 +148,20 @@ export class User implements BaseEntity<IUser> {
     return this._email;
   }
   get password() {
-    return this.password;
+    return this._password;
   }
   get id() {
     return this._id;
+  }
+  get coins() {
+    return this._coins.ammount;
+  }
+  get dust() {
+    return this._role.getDust();
+  }
+  set dust(amount: number) {
+    this._role.setDustToZero();
+    this._role.increaseDust(amount);
   }
   set password(password: IPassword) {
     this._password = password;

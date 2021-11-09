@@ -3,7 +3,7 @@ import { BaseEntity } from 'root/backend/common/BaseEntity';
 import { DustStorage } from './DustStorage';
 import { CreateWalletParam } from './Wallet';
 
-type CreateRoleParam = Omit<IRole, 'manager' | 'administrator' | 'dust'> & { dust: CreateWalletParam };
+export type CreateRoleParam = Omit<IRole, 'dust'> & { dust: CreateWalletParam };
 
 export class Role extends DustStorage implements BaseEntity<IRole> {
   private id: string;
