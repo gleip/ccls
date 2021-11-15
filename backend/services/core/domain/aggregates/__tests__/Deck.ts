@@ -10,8 +10,12 @@ describe('Методы по работе с "Колодой"', () => {
   };
   const getCard = (power: number) =>
     new Card({
+      id: '1',
       created: new Date(),
       image: 'uuid',
+      name: 'Тестовая карта',
+      description: 'За хорошую работу',
+      space: 'Разработка',
       power,
       rarity: RarityType.Common,
       assignedBy: 'uuid',

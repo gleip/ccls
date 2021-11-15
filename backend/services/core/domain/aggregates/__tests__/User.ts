@@ -23,6 +23,9 @@ describe('Методы работы с "Пользователем"', () => {
     id: '1',
     created: new Date(),
     image: 'uuid',
+    name: 'Тестовая карта',
+    description: 'За хорошую работу',
+    space: 'Разработка',
     power: 100,
     rarity: RarityType.Common,
     assignedBy: 'uuid',
@@ -33,7 +36,6 @@ describe('Методы работы с "Пользователем"', () => {
     id: '1',
     active: true,
     coins: { amount: 1000, updated: new Date() },
-    confirmed: true,
     created: new Date(),
     updated: new Date(),
     deck: { cards: [], count: 0, power: 0 },
@@ -42,7 +44,7 @@ describe('Методы работы с "Пользователем"', () => {
     ...existUserParamView,
     password: { hash: '1', salt: '1' },
   };
-  test('Успешно создается новый польщзователь', () => {
+  test('Успешно создается новый пользователь', () => {
     const newUser = User.create(createUserParam);
     expect(newUser.getView()).toMatchObject(createUserParam);
   });
@@ -66,15 +68,6 @@ describe('Методы работы с "Пользователем"', () => {
     user.activate();
     expect(user.isActive()).toBeTruthy();
   });
-  test('Новый пользователь создается неподтвержденным', () => {
-    const newUser = User.create(createUserParam);
-    expect(newUser.isConfirmed()).toBeFalsy();
-  });
-  test('Пользователя можно перевести в подтвержденные пользователи', () => {
-    const newUser = User.create(createUserParam);
-    newUser.confirm();
-    expect(newUser.isConfirmed()).toBeTruthy();
-  });
   test('Пользователю можно подарить "Карточку"', () => {
     const newUser = User.create(createUserParam);
     newUser.putCard(card);
@@ -89,6 +82,11 @@ describe('Методы работы с "Пользователем"', () => {
     const newUser = User.create(createUserParam);
     newUser.writeOffDust(100);
     expect(newUser.dust).toBe(900);
+  });
+  test('Пользователю можно начислить определенное количество пыли', () => {
+    const newUser = User.create(createUserParam);
+    newUser.addDust(100);
+    expect(newUser.dust).toBe(1100);
   });
   test('Пользователю можно установить определенное количество пыли', () => {
     const newUser = User.create(createUserParam);
@@ -167,5 +165,11 @@ describe('Методы работы с "Пользователем"', () => {
     const newPassword = { hash: '2', salt: '2' };
     user.password = newPassword;
     expect(user.password).toMatchObject(newPassword);
+  });
+  test('Пользователю можно поменять email', () => {
+    const user = new User(existUserParamWithPassword);
+    const newEmail = 'test2@test.ru';
+    user.email = newEmail;
+    expect(user.email).toBe(newEmail);
   });
 });

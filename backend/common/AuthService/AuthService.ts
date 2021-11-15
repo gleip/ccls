@@ -25,9 +25,9 @@ export class AuthService implements IAuthService {
       process.env.REFRESH_TOKEN_TTL_IN_SECOND,
     );
   }
-  public getAuth(user: User) {
-    const { id, role, spaceId, confirmed, email } = user.getView();
-    const token = jsonwebtoken.sign({ id, role, spaceId, confirmed, email }, this.JWT_TOKEN_SECRET, {
+  public getAuthInfo(user: User) {
+    const { id, role, spaceId, email } = user.getView();
+    const token = jsonwebtoken.sign({ id, role, spaceId, email }, this.JWT_TOKEN_SECRET, {
       algorithm: this.jwtAlgorithm,
       expiresIn: this.JWT_TOKEN_TTL_IN_SECOND,
     });

@@ -3,7 +3,11 @@ import { Card } from '../Card';
 
 describe('Методы работы с "Карточкой"', () => {
   const commonCardCreateParam = {
+    id: '1',
     image: 'uuid',
+    name: 'Тестовая карта',
+    description: 'За хорошую работу',
+    space: 'Разработка',
     power: 100,
     rarity: RarityType.Common,
     created: new Date(),
@@ -13,6 +17,8 @@ describe('Методы работы с "Карточкой"', () => {
   const legendaryCardCreateParam = {
     created: new Date(),
     image: 'uuid',
+    name: 'Тестовая карта',
+    description: 'За хорошую работу',
     power: 10000,
     rarity: RarityType.Legendary,
     id: 'uuid',

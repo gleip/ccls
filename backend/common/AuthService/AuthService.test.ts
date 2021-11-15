@@ -25,7 +25,7 @@ describe('Генерация хешей, объектов авторизации
   });
 
   describe('Получени объекта авторизации пользователя', () => {
-    const authUserInfo = auth.getAuth(
+    const authUserInfo = auth.getAuthInfo(
       User.create({
         email: 'test@test.ru',
         name: 'Иван',
@@ -54,7 +54,6 @@ describe('Генерация хешей, объектов авторизации
           dust: { amount: 1000 },
         },
         spaceId: '1',
-        confirmed: false,
         email: 'test@test.ru',
       });
     });

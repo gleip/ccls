@@ -30,12 +30,15 @@ export interface ISpace {
 }
 
 export interface ICard {
-  id?: string;
+  id: string;
   image: string;
+  name: string;
+  description: string;
   rarity: RarityType;
   power: number;
   assignedBy?: string;
   assignedDate?: Date;
+  space?: string;
   created: Date;
 }
 
@@ -52,7 +55,6 @@ export interface IUser {
   role: IRole;
   surname: string;
   patronymic: string;
-  confirmed: boolean;
   avatar?: string;
   email: string;
   phone?: string;

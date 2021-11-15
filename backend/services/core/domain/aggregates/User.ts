@@ -1,5 +1,5 @@
 import { BaseEntity } from 'root/backend/common/BaseEntity';
-import { IUser } from 'root/domain';
+import { IRole, IUser } from 'root/domain';
 import { Wallet } from './Wallet';
 import { Deck } from './Deck';
 import { Role, CreateRoleParam } from './Role';
@@ -7,19 +7,19 @@ import { Card } from './Card';
 import { randomUUID } from 'crypto';
 
 // commands
-import { CreateUser } from '../ports/command/user/create';
+import { Register } from '../ports/user';
 
 interface IPassword {
   hash: string;
   salt: string;
 }
 
+type CreateNewUser = Omit<Register, 'password'> & { role: CreateRoleParam };
 type UserCreateParam = Omit<IUser, 'role'> & { role: CreateRoleParam };
 
 export class User implements BaseEntity<IUser> {
   private _id: string;
   private active: boolean;
-  private confirmed: boolean;
   private _name: string;
   private _surname: string;
   private _patronymic: string;
@@ -39,7 +39,6 @@ export class User implements BaseEntity<IUser> {
     role,
     spaceId,
     active,
-    confirmed,
     avatar,
     created,
     email,
@@ -53,7 +52,6 @@ export class User implements BaseEntity<IUser> {
   }: UserCreateParam & { password: IPassword }) {
     this._id = id;
     this.active = active;
-    this.confirmed = confirmed;
     this._name = name;
     this._surname = surname;
     this._patronymic = patronymic;
@@ -68,12 +66,11 @@ export class User implements BaseEntity<IUser> {
     this._coins = new Wallet(coins);
     this.deck = new Deck(deck);
   }
-  static create({ spaceId, email, name, patronymic, role, surname, phone }: CreateUser) {
+  static create({ spaceId, email, name, patronymic, role, surname, phone }: CreateNewUser) {
     const date = new Date();
     return new User({
       id: randomUUID(),
       active: true,
-      confirmed: false,
       coins: { amount: 0, updated: date },
       deck: { count: 0, power: 0, cards: [] },
       avatar: '',
@@ -98,18 +95,8 @@ export class User implements BaseEntity<IUser> {
     this.active = true;
     this.updated = new Date();
   }
-  public confirm() {
-    if (this.confirmed) {
-      return;
-    }
-    this.confirmed = true;
-    this.updated = new Date();
-  }
   public isActive() {
     return this.active;
-  }
-  public isConfirmed() {
-    return this.confirmed;
   }
   public putCard(card: Card) {
     this.deck.add(card);
@@ -118,6 +105,9 @@ export class User implements BaseEntity<IUser> {
   }
   public writeOffDust(amount: number) {
     this._role.decreaseDust(amount);
+  }
+  public addDust(amount: number) {
+    this._role.increaseDust(amount);
   }
   public isAdministrator() {
     return this._role.isAdministrator();
@@ -129,7 +119,6 @@ export class User implements BaseEntity<IUser> {
     return {
       id: this._id,
       active: this.active,
-      confirmed: this.confirmed,
       name: this._name,
       surname: this._surname,
       patronymic: this._patronymic,
@@ -166,6 +155,9 @@ export class User implements BaseEntity<IUser> {
   set password(password: IPassword) {
     this._password = password;
     this.updated = new Date();
+  }
+  set email(email: string) {
+    this._email = email;
   }
   set name(name: string) {
     this._name = name;
