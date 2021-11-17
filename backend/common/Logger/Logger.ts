@@ -1,9 +1,9 @@
 import { injectable } from 'inversify';
-import { ILogger } from './Logger.interface';
+import { LoggerService } from './LoggerService.interface';
 import pino from 'pino';
 
 @injectable()
-export class LoggerService implements ILogger {
+export class Logger implements LoggerService {
   private pino: pino.Logger;
   constructor() {
     this.pino = pino({

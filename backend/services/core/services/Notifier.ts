@@ -1,4 +1,4 @@
-import { INotifier, IParamsSendEmail } from 'root/backend/common/Notifier/Notifier.interface';
+import { INotifier, IParamsSendEmail } from 'common/Notifier/NotifierService.interface';
 import * as nodemailer from 'nodemailer';
 import * as Mail from 'nodemailer/lib/mailer';
 import { errorHandling } from '../../../common/decorators';

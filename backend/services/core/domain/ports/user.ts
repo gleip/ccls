@@ -15,6 +15,11 @@ interface PutCardInfo {
   spaceIdFrom: string;
 }
 
+export interface Pagination {
+  limit: number;
+  offset?: number;
+}
+
 /**
  * Команда на регистрацию "пользователя"
  */
@@ -33,8 +38,7 @@ export type ChangeEmail = VerificationCode & { email: string };
 /**
  * Команда на обновление информации о "пользователе"
  */
-export type Update = Partial<Pick<IUser, 'avatar' | 'name' | 'surname' | 'patronymic' | 'phone' >> &
-  Pick<IUser, 'id'>;
+export type Update = Partial<Pick<IUser, 'avatar' | 'name' | 'surname' | 'patronymic' | 'phone'>> & Pick<IUser, 'id'>;
 
 /**
  * Команда на изменение роли "пользователя"
@@ -74,9 +78,9 @@ export type PutLegendaryCard = Pick<ICard, 'id'> & PutCardInfo;
 /**
  * Запрос на получение списка "пользователей"
  */
-export type GetUserList = Partial<Pick<IUser, 'spaceId'>>;
+export type GetUserList = Partial<Pick<IUser, 'spaceId'>> & Pagination;
 
 /**
  * Запрос на получение "пользователя"
  */
- export type GetUser = Pick<IUser, 'id'>;
+export type GetUser = Pick<IUser, 'id'>;

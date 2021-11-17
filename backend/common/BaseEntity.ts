@@ -1,3 +1,3 @@
-export abstract class BaseEntity<D> {
+export abstract class BaseEntity<D = Object> {
   abstract getView(): D;
 }

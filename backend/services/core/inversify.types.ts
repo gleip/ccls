@@ -8,4 +8,5 @@ export const TYPES = {
   AuthService: Symbol.for('AuthService'),
   LoggerService: Symbol.for('Logger'),
   Notifier: Symbol.for('Notifier'),
+  Toolkit: Symbol.for('Toolkit'),
 };

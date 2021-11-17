@@ -1,4 +1,4 @@
-import { Wallet } from '../Wallet';
+import { Wallet } from '../../Wallet';
 import { setTimeout } from 'timers/promises';
 
 describe('Методы работы с "Кошельком"', () => {
@@ -13,7 +13,7 @@ describe('Методы работы с "Кошельком"', () => {
   });
   test('Кошелек нельзя создать с отрицательной суммой', () => {
     try {
-      const wallet = new Wallet({ amount: -100 });
+      new Wallet({ amount: -100 });
       expect(false).toBeTruthy();
     } catch (error) {
       expect(error).toEqual(lessThanZeroError);

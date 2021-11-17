@@ -1,13 +1,13 @@
 import * as jsonwebtoken from 'jsonwebtoken';
 import { injectable } from 'inversify';
 import { promisify } from 'util';
-import { IAuthService, IHashedInfo } from './AuthService.interface';
+import { AuthToolkitService, IHashedInfo } from './AuthToolkitService.interface';
 import { User } from '../../services/core/domain/aggregates/User';
 import { pbkdf2, randomBytes, randomUUID } from 'crypto';
 import { envValidate } from '../../helpers';
 
 @injectable()
-export class AuthService implements IAuthService {
+export class AuthToolkit implements AuthToolkitService {
   private readonly iterations = 10000;
   private readonly keylen = 256;
   private readonly hashAlgorithm = 'sha256';

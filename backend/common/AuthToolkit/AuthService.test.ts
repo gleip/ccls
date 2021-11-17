@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { AuthService } from './AuthService';
+import { AuthService } from './AuthToolkitService';
 import { User } from '../../services/core/domain/aggregates/User';
 import { RoleType } from 'root/domain';
 import * as jsonwebtoken from 'jsonwebtoken';

@@ -1,46 +1,30 @@
 import { RarityType } from 'root/domain';
-import { Card } from '../Card';
+import { Card } from '../../Card';
+import { getCard, getLegendaryCard } from '../fixtures';
 
 describe('Методы работы с "Карточкой"', () => {
-  const commonCardCreateParam = {
-    id: '1',
-    image: 'uuid',
-    name: 'Тестовая карта',
-    description: 'За хорошую работу',
-    space: 'Разработка',
-    power: 100,
-    rarity: RarityType.Common,
-    created: new Date(),
-    assignedBy: 'uuid',
-    assignedDate: new Date(),
-  };
-  const legendaryCardCreateParam = {
-    created: new Date(),
-    image: 'uuid',
-    name: 'Тестовая карта',
-    description: 'За хорошую работу',
-    power: 10000,
-    rarity: RarityType.Legendary,
-    id: 'uuid',
-  };
+  beforeAll(() => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date());
+  });
   test('Карточка успешно создается', () => {
-    const card = new Card(commonCardCreateParam);
-    expect(card.getView()).toMatchObject(commonCardCreateParam);
+    const card = new Card(getCard());
+    expect(card.getView()).toMatchObject(getCard());
   });
   test('Обычная карточка успешно создается', () => {
-    const card = new Card(commonCardCreateParam);
+    const card = new Card(getCard());
     expect(card.isCommon()).toBeTruthy();
   });
   test('Редкая карточка успешно создается', () => {
-    const card = new Card({ ...commonCardCreateParam, rarity: RarityType.Rare });
+    const card = new Card({ ...getCard(), rarity: RarityType.Rare });
     expect(card.isRare()).toBeTruthy();
   });
   test('Легендарная карточка успешно создается', () => {
-    const card = new Card(legendaryCardCreateParam);
+    const card = new Card(getLegendaryCard());
     expect(card.isLegendary()).toBeTruthy();
   });
   test('При присвоении легендарной карты можно задать идентификатор пользователя, который дарит карту и время присвоения', () => {
-    const card = new Card(legendaryCardCreateParam);
+    const card = new Card(getLegendaryCard());
     const assignedDate = new Date();
     const assignedBy = 'uuid';
     card.assignedBy = assignedBy;

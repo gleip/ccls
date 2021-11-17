@@ -1,17 +1,21 @@
-import { Space } from '../Space';
+import { Space } from '../../Space';
+import { getSpace } from '../fixtures';
 
 describe('Методы работы с "Пространством"', () => {
-  const createParam = { id: '1', name: 'Разработка', active: true, dust: { amount: 1000 } };
+  beforeAll(() => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date());
+  });
   test('Пространство успешно создается', () => {
-    const space = new Space(createParam);
-    expect(space.getView()).toMatchObject(createParam);
+    const space = new Space(getSpace());
+    expect(space.getView()).toMatchObject(getSpace());
   });
   test('Успешно создается активное пространство', () => {
-    const space = new Space(createParam);
+    const space = new Space(getSpace());
     expect(space.isActive()).toBeTruthy();
   });
   test('Пространство можно сделать неактивным', () => {
-    const space = new Space(createParam);
+    const space = new Space(getSpace());
     space.deactivate();
     expect(space.isActive()).toBeFalsy();
   });

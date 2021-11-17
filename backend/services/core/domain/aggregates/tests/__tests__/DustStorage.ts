@@ -1,4 +1,4 @@
-import { DustStorage } from '../DustStorage';
+import { DustStorage } from '../../DustStorage';
 
 describe('Методов работы с "Хранилищем пыли"', () => {
   test('Успешно создается хранилище пыли', () => {
