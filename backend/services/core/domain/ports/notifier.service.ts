@@ -3,6 +3,6 @@ export interface IParamsSendEmail {
   code: string;
 }
 
-export interface INotifier {
+export interface NotifierService {
   sendVerificationCode(params: IParamsSendEmail): Promise<void>;
 }

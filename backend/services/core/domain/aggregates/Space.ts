@@ -1,5 +1,5 @@
 import { ISpace } from 'root/domain';
-import { BaseEntity } from 'root/backend/common/BaseEntity';
+import { BaseEntity } from 'services/core/domain/aggregates/BaseEntity';
 import { DustStorage } from './DustStorage';
 import { CreateWalletParam } from './Wallet';
 

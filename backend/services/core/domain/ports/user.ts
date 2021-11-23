@@ -1,4 +1,5 @@
 import { ICard, IUser } from 'root/domain';
+import { CreateRoleParam } from '../aggregates/Role';
 
 interface Password {
   password: string;
@@ -10,9 +11,9 @@ interface VerificationCode {
 }
 
 interface PutCardInfo {
-  userIdFrom: string;
-  userIdTo: string;
-  spaceIdFrom: string;
+  userFromId: string;
+  userToId: string;
+  spaceFromId: string;
 }
 
 export interface Pagination {
@@ -24,6 +25,11 @@ export interface Pagination {
  * Команда на регистрацию "пользователя"
  */
 export type Register = Pick<IUser, 'email' | 'name' | 'surname' | 'patronymic' | 'spaceId' | 'phone'> & Password;
+
+/**
+ * Отправка проверочного кода
+ */
+export type SendVerificationCode = Pick<IUser, 'id'>;
 
 /**
  * Команда на смену пароля "пользователя"
@@ -43,7 +49,7 @@ export type Update = Partial<Pick<IUser, 'avatar' | 'name' | 'surname' | 'patron
 /**
  * Команда на изменение роли "пользователя"
  */
-export type ChangeRole = Pick<IUser, 'id' | 'role'>;
+export type ChangeRole = Pick<IUser, 'id'> & { role: CreateRoleParam };
 
 /**
  * Команда на изменение "пространства" "пользователя"

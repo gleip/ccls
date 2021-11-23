@@ -1,27 +1,27 @@
 import { RarityType, RoleType } from 'root/domain';
 
-export const getRole = () => ({
+export const getRole = (type: RoleType = RoleType.Employee, amount: number = 1000) => ({
   id: '1',
   name: 'Сотрудник',
   dust: {
-    amount: 1000,
+    amount,
   },
-  type: RoleType.Employee,
+  type,
 });
 
-export const getRegisterUser = () => ({
+export const getRegisterUser = (type: RoleType = RoleType.Employee, amount?: number) => ({
   email: 'test@test.ru',
   spaceId: '1',
   name: 'Иван',
   surname: 'Иванов',
   patronymic: 'Иванович',
-  role: getRole(),
+  role: getRole(type, amount),
 });
 
 export const getExistUser = () => ({ ...getRegisterUser() });
 
-export const getViewUser = () => ({
-  ...getRegisterUser(),
+export const getViewUser = (type: RoleType = RoleType.Employee, amount?: number) => ({
+  ...getRegisterUser(type, amount),
   id: '1',
   active: true,
   coins: { amount: 1000, updated: new Date() },
@@ -30,12 +30,12 @@ export const getViewUser = () => ({
   deck: { cards: [], count: 0, power: 0 },
 });
 
-export const getUserFromCollection = () => ({
-  ...getViewUser(),
+export const getUserFromCollection = (type: RoleType = RoleType.Employee, amount?: number) => ({
+  ...getViewUser(type, amount),
   password: { hash: '1', salt: '1' },
 });
 
-export const getCard = (power: number = 100) => ({
+export const getCard = (power: number = 100, rarity: RarityType = RarityType.Common) => ({
   id: '1',
   created: new Date(),
   image: 'uuid',
@@ -43,7 +43,7 @@ export const getCard = (power: number = 100) => ({
   description: 'За хорошую работу',
   space: 'Разработка',
   power,
-  rarity: RarityType.Common,
+  rarity,
   assignedBy: 'uuid',
   assignedDate: new Date(),
 });
@@ -58,9 +58,9 @@ export const getLegendaryCard = () => ({
   id: 'uuid',
 });
 
-export const getSpace = () => ({
+export const getSpace = (name: string = 'Разработка', amount: number = 1000) => ({
   id: '1',
-  name: 'Разработка',
+  name,
   active: true,
-  dust: { amount: 1000 },
+  dust: { amount },
 });

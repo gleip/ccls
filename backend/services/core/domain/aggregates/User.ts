@@ -1,4 +1,4 @@
-import { BaseEntity } from 'root/backend/common/BaseEntity';
+import { BaseEntity } from 'services/core/domain/aggregates/BaseEntity';
 import { IRole, IUser } from 'root/domain';
 import { Wallet } from './Wallet';
 import { Deck } from './Deck';
@@ -151,6 +151,7 @@ export class User implements BaseEntity<IUser> {
   set dust(amount: number) {
     this._role.setDustToZero();
     this._role.increaseDust(amount);
+    this.updated = new Date();
   }
   set password(password: IPassword) {
     this._password = password;
@@ -158,6 +159,7 @@ export class User implements BaseEntity<IUser> {
   }
   set email(email: string) {
     this._email = email;
+    this.updated = new Date();
   }
   set name(name: string) {
     this._name = name;

@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { AuthService } from './AuthToolkitService';
+import { AuthToolkit } from '.';
 import { User } from '../../services/core/domain/aggregates/User';
 import { RoleType } from 'root/domain';
 import * as jsonwebtoken from 'jsonwebtoken';
@@ -9,7 +9,7 @@ describe('Генерация хешей, объектов авторизации
   process.env.JWT_TOKEN_SECRET = 'secret';
   process.env.JWT_TOKEN_TTL_IN_SECOND = '300';
   process.env.REFRESH_TOKEN_TTL_IN_SECOND = '3000';
-  const auth = new AuthService();
+  const auth = new AuthToolkit();
 
   describe('Хеширование паролей', () => {
     test('Пользовательский пароль успешно хешируется', async () => {

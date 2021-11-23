@@ -9,8 +9,9 @@ interface GenerateCardRequest {
   name: string;
   description: string;
   power: number;
+  image: string
 }
 
 export interface CardGenerator {
-  getCard(generateCardRequest: GenerateCardRequest): Promise<Card>;
+  makeCard(generateCardRequest: GenerateCardRequest): Promise<Card>;
 }
