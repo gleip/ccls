@@ -5,6 +5,10 @@ import { Role } from '../..';
 import { getRegisterUser, getCard, getViewUser, getUserFromCollection } from '../fixtures';
 
 describe('Методы работы с "Пользователем"', () => {
+  beforeAll(() => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date());
+  });
   const card = new Card(getCard());
   test('Успешно создается новый пользователь', () => {
     const newUser = User.create(getRegisterUser());

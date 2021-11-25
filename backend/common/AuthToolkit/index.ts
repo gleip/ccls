@@ -4,10 +4,10 @@ import { promisify } from 'util';
 import { AuthToolkitService, IHashedInfo } from '../../services/core/domain/ports/authToolkit.service';
 import { User } from '../../services/core/domain/aggregates/User';
 import { pbkdf2, randomBytes, randomUUID } from 'crypto';
-import { envValidate } from '../../helpers';
+import { ConfigurableService } from '../ConfigurableService';
 
 @injectable()
-export class AuthToolkit implements AuthToolkitService {
+export class AuthToolkit extends ConfigurableService implements AuthToolkitService {
   private readonly iterations = 10000;
   private readonly keylen = 256;
   private readonly hashAlgorithm = 'sha256';
@@ -18,9 +18,10 @@ export class AuthToolkit implements AuthToolkitService {
   private REFRESH_TOKEN_TTL_IN_SECOND: number;
   private _getHash = promisify(pbkdf2);
   constructor() {
-    this.JWT_TOKEN_SECRET = envValidate('JWT_TOKEN_SECRET', process.env.JWT_TOKEN_SECRET);
-    this.JWT_TOKEN_TTL_IN_SECOND = +envValidate('JWT_TOKEN_TTL_IN_SECOND', process.env.JWT_TOKEN_TTL_IN_SECOND);
-    this.REFRESH_TOKEN_TTL_IN_SECOND = +envValidate(
+    super();
+    this.JWT_TOKEN_SECRET = this.envValidate('JWT_TOKEN_SECRET', process.env.JWT_TOKEN_SECRET);
+    this.JWT_TOKEN_TTL_IN_SECOND = +this.envValidate('JWT_TOKEN_TTL_IN_SECOND', process.env.JWT_TOKEN_TTL_IN_SECOND);
+    this.REFRESH_TOKEN_TTL_IN_SECOND = +this.envValidate(
       'REFRESH_TOKEN_TTL_IN_SECOND',
       process.env.REFRESH_TOKEN_TTL_IN_SECOND,
     );
