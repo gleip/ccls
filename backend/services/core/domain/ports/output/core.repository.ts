@@ -17,5 +17,5 @@ export interface CoreRepository {
   getLegendaryCardById(id: string): Promise<Card | null>;
   removeLegendaryCardById(id: string): Promise<void>;
   addLegendaryCard(card: Card): Promise<void>;
-  savePutCardResult(userFrom: User, userTo: User, spaceFrom?: Space, legendaryCard?: Card): Promise<void>;
+  savePutCardResult(userFrom: User, userTo: User, spaceFrom?: Space, legendaryCardId?: string): Promise<void>;
 }

@@ -316,7 +316,6 @@ describe('Сервис "Пользователи"', () => {
       repository.getUserById.mockResolvedValueOnce(userTo);
       repository.getSpaceById.mockResolvedValue(spaceFrom);
       repository.getLegendaryCardById.mockResolvedValue(card);
-      repository.removeLegendaryCardById.mockResolvedValue('Ok');
       repository.savePutCardResult.mockResolvedValue('Ok');
 
       await userService.putLegendaryCard(putLegendaryCardParam);

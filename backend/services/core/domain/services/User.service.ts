@@ -238,7 +238,6 @@ export class UserService {
     userTo.putCard(legendaryCard);
     userFrom.writeOffDust(writeOffFromUser);
     spaceFrom.decreaseDust(writeOffFromSpace);
-    await this.repository.removeLegendaryCardById(id);
-    return this.repository.savePutCardResult(userFrom, userTo, spaceFrom, legendaryCard);
+    return this.repository.savePutCardResult(userFrom, userTo, spaceFrom, id);
   }
 }

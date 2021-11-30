@@ -180,7 +180,7 @@ export class Repository extends ConfigurableService implements CoreRepository {
     await this.legendaryCardCollection.insertOne(card.getView());
   }
   @errorHandler('Не удалось сохранить результат операции')
-  public async savePutCardResult(userFrom: User, userTo: User, spaceFrom?: Space, legendaryCard?: Card) {
+  public async savePutCardResult(userFrom: User, userTo: User, spaceFrom?: Space, legendaryCardId?: string) {
     const session = this.client.startSession();
     try {
       const viewUserFrom = userFrom.getView();
@@ -212,9 +212,8 @@ export class Repository extends ConfigurableService implements CoreRepository {
           { session },
         );
       }
-      if (legendaryCard) {
-        const id = legendaryCard.getView().id;
-        await this.legendaryCardCollection.deleteOne({ id }, { session });
+      if (legendaryCardId) {
+        await this.legendaryCardCollection.deleteOne({ id: legendaryCardId }, { session });
       }
     } finally {
       session.endSession();
