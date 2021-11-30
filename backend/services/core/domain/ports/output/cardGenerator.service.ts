@@ -1,6 +1,6 @@
-import { User } from '../aggregates/User';
-import { Space } from '../aggregates/Space';
-import { Card } from '../aggregates';
+import { User } from '../../aggregates/User';
+import { Space } from '../../aggregates/Space';
+import { Card } from '../../aggregates';
 
 interface GenerateCardRequest {
   userFrom: User;

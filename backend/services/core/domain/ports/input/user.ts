@@ -1,5 +1,5 @@
 import { ICard, IUser } from 'root/domain';
-import { CreateRoleParam } from '../aggregates/Role';
+import { CreateRoleParam } from '../../aggregates/Role';
 
 interface Password {
   password: string;

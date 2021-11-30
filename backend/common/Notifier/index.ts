@@ -1,8 +1,8 @@
-import { NotifierService, IParamsSendEmail } from '../../services/core/domain/ports/notifier.service';
+import { NotifierService, IParamsSendEmail } from '../../services/core/domain/ports/output/notifier.service';
 import * as nodemailer from 'nodemailer';
 import * as Mail from 'nodemailer/lib/mailer';
 import { injectable } from 'inversify';
-import { ConfigurableService } from 'common/ConfigurableService';
+import { ConfigurableService } from '../ConfigurableService';
 
 @injectable()
 export class Notifier extends ConfigurableService implements NotifierService {
@@ -13,10 +13,10 @@ export class Notifier extends ConfigurableService implements NotifierService {
   private smtpServerPort: number;
   constructor() {
     super();
-    this.smtpServerHost = this.getSettingFromEnv('SMTP_SERVER_HOST', 'string');
-    this.smtpServerUsername = this.envValidate('SMTP_SERVER_USERNAME', process.env.SMTP_SERVER_USERNAME);
-    this.smtpServerPassword = this.envValidate('SMTP_SERVER_PASSWORD', process.env.SMTP_SERVER_PASSWORD);
-    this.smtpServerPort = +this.envValidate('SMTP_SERVER_PORT', process.env.SMTP_SERVER_PORT);
+    this.smtpServerHost = this.getSettingFromEnv('SMTP_SERVER_HOST');
+    this.smtpServerUsername = this.getSettingFromEnv('SMTP_SERVER_USERNAME');
+    this.smtpServerPassword = this.getSettingFromEnv('SMTP_SERVER_PASSWORD');
+    this.smtpServerPort = this.castToNumber(this.getSettingFromEnv('SMTP_SERVER_PORT'));
 
     this.MailService = nodemailer.createTransport({
       host: this.smtpServerHost,

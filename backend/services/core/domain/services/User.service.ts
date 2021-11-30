@@ -1,5 +1,5 @@
-import { AuthToolkitService } from '../ports/authToolkit.service';
-import { ToolkitService } from '../ports/toolkit.service';
+import { AuthToolkitService } from '../ports/output/authToolkit.service';
+import { ToolkitService } from '../ports/output/toolkit.service';
 import { inject, injectable } from 'inversify';
 import { TYPES } from '../../inversify.types';
 import { User, Role, Space } from '../aggregates';
@@ -21,10 +21,10 @@ import {
   PutCard,
   PutLegendaryCard,
   Update,
-} from '../ports/user';
-import { CardGenerator } from '../ports/cardGenerator.service';
-import { CoreRepository } from '../ports/core.repository';
-import { NotifierService } from '../ports/notifier.service';
+} from '../ports/input/user';
+import { CardGenerator } from '../ports/output/cardGenerator.service';
+import { CoreRepository } from '../ports/output/core.repository';
+import { NotifierService } from '../ports/output/notifier.service';
 
 interface WriteOffPlan {
   writeOffFromUser: number;

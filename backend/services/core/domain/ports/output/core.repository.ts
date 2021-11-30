@@ -1,6 +1,6 @@
 import { RoleType } from 'root/domain';
-import { Card, Role, Space, User } from '../aggregates';
-import { Pagination } from './user';
+import { Card, Role, Space, User } from '../../aggregates';
+import { Pagination } from '../input/user';
 
 export interface CoreRepository {
   putUser(user: User): Promise<void>;

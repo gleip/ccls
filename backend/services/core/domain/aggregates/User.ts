@@ -7,9 +7,9 @@ import { Card } from './Card';
 import { randomUUID } from 'crypto';
 
 // commands
-import { Register } from '../ports/user';
+import { Register } from '../ports/input/user';
 
-interface IPassword {
+export interface IPassword {
   hash: string;
   salt: string;
 }

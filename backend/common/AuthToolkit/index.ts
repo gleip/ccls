@@ -1,7 +1,7 @@
 import * as jsonwebtoken from 'jsonwebtoken';
 import { injectable } from 'inversify';
 import { promisify } from 'util';
-import { AuthToolkitService, IHashedInfo } from '../../services/core/domain/ports/authToolkit.service';
+import { AuthToolkitService, IHashedInfo } from '../../services/core/domain/ports/output/authToolkit.service';
 import { User } from '../../services/core/domain/aggregates/User';
 import { pbkdf2, randomBytes, randomUUID } from 'crypto';
 import { ConfigurableService } from '../ConfigurableService';
@@ -19,12 +19,9 @@ export class AuthToolkit extends ConfigurableService implements AuthToolkitServi
   private _getHash = promisify(pbkdf2);
   constructor() {
     super();
-    this.JWT_TOKEN_SECRET = this.envValidate('JWT_TOKEN_SECRET', process.env.JWT_TOKEN_SECRET);
-    this.JWT_TOKEN_TTL_IN_SECOND = +this.envValidate('JWT_TOKEN_TTL_IN_SECOND', process.env.JWT_TOKEN_TTL_IN_SECOND);
-    this.REFRESH_TOKEN_TTL_IN_SECOND = +this.envValidate(
-      'REFRESH_TOKEN_TTL_IN_SECOND',
-      process.env.REFRESH_TOKEN_TTL_IN_SECOND,
-    );
+    this.JWT_TOKEN_SECRET = this.getSettingFromEnv('JWT_TOKEN_SECRET');
+    this.JWT_TOKEN_TTL_IN_SECOND = this.castToNumber(this.getSettingFromEnv('JWT_TOKEN_TTL_IN_SECOND'));
+    this.REFRESH_TOKEN_TTL_IN_SECOND = this.castToNumber(this.getSettingFromEnv('REFRESH_TOKEN_TTL_IN_SECOND'));
   }
   public getAuthInfo(user: User) {
     const { id, role, spaceId, email } = user.getView();

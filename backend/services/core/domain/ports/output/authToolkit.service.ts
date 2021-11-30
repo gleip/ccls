@@ -1,5 +1,5 @@
 import { IGenerateAuthResult } from 'root/domain';
-import { User } from '../aggregates/User';
+import { User } from '../../aggregates/User';
 
 export interface IHashedInfo {
   hash: string;
