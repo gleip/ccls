@@ -1,0 +1,217 @@
+@startuml Domain entity
+skinparam classAttributeIconSize 0
+interface Password {
+  hash: string
+  salt: string
+}
+interface NewUser {
+  spaceId: string
+  name: string
+  email: string
+  patronymic: string
+  role: RoleView
+  surname: string
+  phone: string
+}
+class User {
+  - id: string
+  - active: boolean
+  - name: string
+  - surname: string
+  - patronymic: string
+  - avatar: string
+  - email: string
+  - password: Password
+  - phone: string
+  - created: Date
+  - updated: Date
+  - spaceId: string
+  - role: Role
+  - coins: Wallet
+  - deck: Deck
+  .. Methods ..
+  {static} create(NewUser): User
+  + deactivate(): void
+  + activate(): void
+  + isActive(): boolean
+  + putCard(card: Card): void
+  + writeOffDust(amount: number): void
+  + addDust(amount: number): void
+  + isAdministrator(): boolean
+  + isManager(): boolean
+  + getView(): UserView
+  .. Getters ..
+  + email(): string
+  + password(): Password
+  + id(): string
+  + coins(): number
+  + dust(): number
+  .. Setters ..
+  + password(password: Password): void
+  + email(email: string): void
+  + name(name: string): void
+  + surname(surname: string): void
+  + patronymic(patronymic: string): void
+  + avatar(avatar: string): void
+  + phone(phone: string): void
+  + spaceId(spaceId: string): void
+  + role(role: Role): void
+}
+
+interface UserView {
+  id: string
+  active: boolean
+  name: string
+  role: RoleView;
+  surname: string
+  patronymic: string
+  avatar: string[0..1]
+  email: string
+  phone: string[0..1]
+  spaceId: string
+  coins: WalletView
+  deck: DeckView
+  created: Date
+  updated: Date
+}
+
+enum RoleType {
+  EMPLOYEE
+  MANAGER
+  ADMINISTRATOR
+}
+
+class Role {
+  - id: string
+  - type: RoleType
+  - name: string
+  + isManager(): boolean
+  + isAdministrator(): boolean
+  + getView(): RoleView
+}
+
+interface RoleView {
+  id: string
+  name: string
+  type: RoleType
+  dust: WalletView
+}
+
+class Wallet {
+  - amount: number
+  - updated: Date
+  + getView(): WalletView
+  + decrease(amount: number): void
+  + increase(amount: number): void
+  + amount(): number
+  + amount(amount: number): void
+}
+
+interface WalletView {
+  amount: number
+  updated: Date
+}
+
+class DustStorage {
+  # dust: Wallet
+  + increaseDust(amount: number): void
+  + decreaseDust(amount: number): void
+  + getDust(): number
+  + setDustToZero(): void
+}
+
+class Space {
+  - id: string
+  - name: string
+  - active: boolean
+  + deactivate(): void
+  + isActive(): boolean
+  + getView(): SpaceView
+}
+
+interface SpaceView {
+  id: string
+  name: string
+  dust: WalletView
+  active: boolean
+}
+
+class Deck {
+  - cards: Card[]
+  - power: number
+  - count: number
+  + add(card: Card): void
+  + getView(): DeckView
+}
+
+interface DeckView {
+  power: number
+  count: number
+  cards: CardView[0..*]
+}
+
+class Card {
+  - id: string
+  - image: string
+  - name: string
+  - description: string
+  - space: string
+  - rarity: RarityType
+  - power: number
+  - assignedBy: string
+  - assignedDate: Date
+  - created: Date
+  + isCommon(): boolean
+  + isRare(): boolean
+  + isLegendary(): boolean
+  + power(): number
+  + assignedBy(assignedBy: string): void
+  + assignedDate(date: Date): void
+  + getView(): CardView
+}
+
+interface CardView {
+  id: string
+  image: string
+  name: string
+  description: string
+  rarity: RarityType
+  power: number
+  assignedBy: string[0..1]
+  assignedDate: Date[0..1]
+  space: string[0..1]
+  created: Date
+}
+
+enum RarityType {
+  COMMON
+  RARE
+  LEGENDARY
+}
+
+User::Password *-- Password
+User::coins *-- Wallet
+User::role *-- Role
+User::NewUser --> NewUser
+User::deck *-- Deck
+User::spaceId --> Space
+User --> UserView
+Role::type --> RoleType
+DustStorage::dust *-- Wallet
+Role --|> DustStorage
+Space --|> DustStorage
+Card::rarity --> RarityType
+Deck::cards *-- Card
+UserView::role *-- RoleView
+Role --> RoleView
+Wallet --> WalletView
+RoleView::dust *-- WalletView
+Space --> SpaceView
+SpaceView::dust *-- ValletView
+CardView::rarity --> RarityType
+Card --> CardView
+DeckView::cards *-- CardView
+Deck --> DeckView
+UserView::coins *-- WalletView
+UserView::deck *-- DeckView
+@enduml
