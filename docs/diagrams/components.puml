@@ -1,0 +1,17 @@
+@startuml Components 
+Domain_logic -down- [Domain service]
+Api -down- [Gateway]
+[Gateway] ..> Domain_logic : use
+[Domain service] -left--( Notifications
+[Domain service] --( Logging
+[Domain service] --( Credentials
+[Domain service] --( Helpers
+[Domain service] -right--( Entities_storage
+Notifications -left- [Notifier]
+Logging -down- [Logger]
+Credentials -down- [AuthToolkit]
+Helpers -down- [Toolkit]
+Entities_storage - [Repository]
+DB_Api - [DB]
+[Repository] -right..> DB_Api : use
+@enduml
