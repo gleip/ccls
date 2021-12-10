@@ -214,4 +214,24 @@ DeckView::cards *-- CardView
 Deck --> DeckView
 UserView::coins *-- WalletView
 UserView::deck *-- DeckView
+RoleView::type --> RoleType
+SpaceView::dust *-- WalletView
+
+' remove User
+' remove Role
+' remove Wallet
+' remove Deck
+' remove Card
+' remove Space
+' remove DustStorage
+
+remove UserView
+remove RoleView
+remove WalletView
+remove SpaceView
+remove DeckView
+remove CardView
+
+remove Password
+remove NewUser
 @enduml
