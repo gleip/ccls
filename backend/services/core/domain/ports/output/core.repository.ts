@@ -14,6 +14,7 @@ export interface CoreRepository {
   getSpaceById(spaceId: string): Promise<Space | null>;
   putSpace(space: Space): Promise<void>;
   getRoleByType(type: RoleType): Promise<Role>;
+  getRoleById(id: string): Promise<Role>;
   getLegendaryCardById(id: string): Promise<Card | null>;
   removeLegendaryCardById(id: string): Promise<void>;
   addLegendaryCard(card: Card): Promise<void>;

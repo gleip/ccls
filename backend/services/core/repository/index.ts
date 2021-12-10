@@ -163,6 +163,16 @@ export class Repository extends ConfigurableService implements CoreRepository {
     }
     throw new Error(`Роли с типом ${type} не найденно`);
   }
+  @errorHandler('Не удалось получить роль')
+  public async getRoleById(id: string) {
+    const roleDocument = await this.roleCollection.findOne({ id });
+    if (roleDocument) {
+      const role = new Role(roleDocument);
+      this.revisions.set(role, roleDocument.revision);
+      return role;
+    }
+    throw new Error(`Роли с id ${id} не найденно`);
+  }
   @errorHandler('Не удалось получить легендарную карту')
   public async getLegendaryCardById(id: string) {
     const legendaryCardDocument = await this.legendaryCardCollection.findOne({ id });

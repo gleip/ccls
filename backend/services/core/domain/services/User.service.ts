@@ -35,6 +35,7 @@ interface WriteOffPlan {
 export class UserService {
   private errors = {
     USER_NOT_FOUND: 'Пользователь не найден',
+    ROLE_NOT_FOUND: 'Роль не найдена',
     SPACE_NOT_FOUD: 'Пространство не найдено',
     WRONG_EMAIL_OR_PASSWORD: 'Неверный логин или пароль',
     USER_EXIST: 'Пользователь с таким email уже существует',
@@ -141,12 +142,17 @@ export class UserService {
     return user.getView();
   }
 
-  public async changeRole({ id, role }: ChangeRole) {
-    const user = await this.repository.getUserById(id);
+  public async changeRole({ id, roleId }: ChangeRole) {
+    const userRequest = this.repository.getUserById(id);
+    const roleRequest = this.repository.getRoleById(roleId);
+    const [user, role] = await Promise.all([userRequest, roleRequest]);
     if (this.toolkit.entityIsNotExist(user)) {
       throw new Error(this.errors.USER_NOT_FOUND);
     }
-    user.role = new Role(role);
+    if (this.toolkit.entityIsNotExist(role)) {
+      throw new Error(this.errors.ROLE_NOT_FOUND);
+    }
+    user.role = role;
     await this.repository.putUser(user);
   }
 

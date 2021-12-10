@@ -19,6 +19,7 @@ describe('Сервис "Пользователи"', () => {
     setUserVerificationCode: jest.fn(),
     getUserList: jest.fn(),
     getRoleByType: jest.fn(),
+    getRoleById: jest.fn(),
     getSpaceById: jest.fn(),
     savePutCardResult: jest.fn(),
     getLegendaryCardById: jest.fn(),
@@ -154,13 +155,21 @@ describe('Сервис "Пользователи"', () => {
       const newRole = getRole(RoleType.Manager);
       const user = new User(getUserFromCollection());
       repository.getUserById.mockResolvedValue(user);
-      await userService.changeRole({ id: '1', role: newRole });
+      repository.getRoleById.mockResolvedValue(new Role(newRole));
+      await userService.changeRole({ id: '1', roleId: '1' });
       expect(user.getView().role).toMatchObject(newRole);
     });
     test('Если при смене "Роли" "Пользователь" не найден, выбрасывается ошибка', async () => {
       const newRole = getRole(RoleType.Manager);
       repository.getUserById.mockResolvedValue(null);
-      expect(userService.changeRole({ id: '1', role: newRole })).rejects.toThrowError();
+      repository.getRoleById.mockResolvedValue(newRole);
+      expect(userService.changeRole({ id: '1', roleId: '1' })).rejects.toThrowError();
+    });
+    test('Если при смене "Роли" новая "Роль" не найден, выбрасывается ошибка', async () => {
+      const user = new User(getUserFromCollection());
+      repository.getUserById.mockResolvedValue(user);
+      repository.getRoleById.mockResolvedValue(null);
+      expect(userService.changeRole({ id: '1', roleId: '1' })).rejects.toThrowError();
     });
     test('Успешно меняется "Пространство" "Пользователя"', async () => {
       const newSpaceId = 'newSpaceId';

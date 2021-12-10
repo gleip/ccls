@@ -1,0 +1,154 @@
+scalar Date
+scalar Void
+
+enum RoleType {
+  ADMINISTRATOR
+  EMPLOYEE
+  MANAGER
+}
+
+enum RarityType {
+  COMMON
+  RARE
+  LEGENDARY
+}
+
+type Wallet {
+  amount: Int!
+  updated: Date!
+}
+
+type Role {
+  id: ID!
+  name: String!
+  type: RoleType!
+  dust: Wallet!
+}
+
+type Space {
+  id: ID!
+  name: String!
+  dust: Wallet!
+  active: Boolean!
+}
+
+type Card {
+  id: ID!
+  image: String!
+  name: String!
+  description: String!
+  rarity: RarityType!
+  power: Int!
+  assignedBy: String
+  assignedDate: Date
+  space: String
+  created: Date!
+}
+
+type Deck {
+  power: Int!
+  count: Int!
+  cards: [Card]!
+}
+
+type User {
+  id: ID!
+  active: Boolean!
+  name: String!
+  role: Role!
+  surname: String!
+  patronymic: String!
+  avatar: String
+  email: String!
+  phone: String
+  space: Space!
+  coins: Wallet!
+  deck: Deck!
+  created: Date!
+  updated: Date!
+}
+
+type Auth {
+  token: String!
+  refreshToken: String!
+  expired: Date!
+}
+
+input RegisterUserCommand {
+  email: String!
+  name: String!
+  surname: String!
+  patronymic: String!
+  spaceId: ID!
+  phone: String!
+  password: String!
+}
+input SignInCommand {
+  email: String!
+  password: String!
+}
+input ChangePasswordCommand {
+  verificationCode: String!
+  password: String!
+}
+input ChangeEmailCommand {
+  verificationCode: String!
+  email: String!
+}
+input UpdateUserCommand {
+  avatar: String
+  name: String
+  patronymic: String
+  phone: String
+  surname: String
+}
+input ChangeUserRoleCommand {
+  id: ID!
+  roleId: ID!
+}
+
+input ChangeUserSpaceCommand {
+  id: ID!
+  spaceId: ID!
+}
+
+input ChangeUserActivityCommand {
+  id: ID!
+  active: Boolean!
+}
+
+input PutCardCommand {
+  userFromId: ID!
+  userToId: ID!
+  spaceFromId: ID!
+  name: String!
+  description: String!
+  power: Int!
+}
+
+input PutLegendaryCardCommand {
+  idLegendaryCard: ID!
+  userFromId: ID!
+  spaceFromId: ID!
+  userToId: ID!
+}
+
+type Query {
+  getUser(id: ID!): User
+  getUserList(spaceId: ID): [User]
+}
+
+type Mutation {
+  register(registerUserCommand: RegisterUserCommand): User!
+  signIn(signInInCommand: SignInCommand): Auth!
+  refreshToken: Auth!
+  sendVerificationCode: Void
+  changeUserPassword(changePasswordCommand: ChangePasswordCommand): Void
+  changeUserEmail(changeEmailCommand: ChangeEmailCommand): Void
+  updateUser(updateUserCommand: UpdateUserCommand): User!
+  changeUserRole(changeUserRoleCommand: ChangeUserRoleCommand): Void
+  changeUserSpace(changeUserSpaceCommand: ChangeUserSpaceCommand): Void
+  changeUserActivity(changeUserActivityCommand: ChangeUserActivityCommand): Void
+  putCard(putCardCommand: PutCardCommand): Void
+  putLegendaryCard(putLegendaryCardCommand: PutLegendaryCardCommand): Void
+}

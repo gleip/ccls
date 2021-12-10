@@ -49,7 +49,7 @@ export type Update = Partial<Pick<IUser, 'avatar' | 'name' | 'surname' | 'patron
 /**
  * Команда на изменение роли "пользователя"
  */
-export type ChangeRole = Pick<IUser, 'id'> & { role: CreateRoleParam };
+export type ChangeRole = Pick<IUser, 'id'> & { roleId: string };
 
 /**
  * Команда на изменение "пространства" "пользователя"
