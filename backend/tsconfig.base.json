@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "target": "ES2020",
+    "lib": ["es2020"],
+    "sourceMap": true,
+    "strict": true,
+    "baseUrl": "",
+    "outDir": "./dist",
+    "skipLibCheck": true,
+    "paths": {
+      "core": ["./services/core"],
+      "common": ["./common"]
+    }
+  },
+  "include": ["."],
+  "exclude": ["node_modules", "dist"]
+}

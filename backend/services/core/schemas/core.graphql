@@ -13,6 +13,15 @@ enum RarityType {
   LEGENDARY
 }
 
+enum ErrorCodes {
+  BAD_REQUEST
+}
+
+type ErrorResponse {
+  code: ErrorCodes!
+  message: String!
+}
+
 type Wallet {
   amount: Int!
   updated: Date!
@@ -79,7 +88,7 @@ input RegisterUserCommand {
   name: String!
   surname: String!
   patronymic: String!
-  spaceId: ID!
+  spaceId: ID
   phone: String!
   password: String!
 }
@@ -134,21 +143,23 @@ input PutLegendaryCardCommand {
 }
 
 type Query {
-  getUser(id: ID!): User
-  getUserList(spaceId: ID): [User]
+  getUser(id: ID!): User!
+  getUserList(spaceId: ID): [User]!
+  getSpaceList: [Space]!
+  getRoleList: [Role]!
 }
 
 type Mutation {
-  register(registerUserCommand: RegisterUserCommand): User!
-  signIn(signInInCommand: SignInCommand): Auth!
-  refreshToken: Auth!
+  signIn(signInCommand: SignInCommand!): Auth!
+  register(registerUserCommand: RegisterUserCommand!): Auth!
+  refreshUserAuth: Auth!
   sendVerificationCode: Void
-  changeUserPassword(changePasswordCommand: ChangePasswordCommand): Void
-  changeUserEmail(changeEmailCommand: ChangeEmailCommand): Void
-  updateUser(updateUserCommand: UpdateUserCommand): User!
-  changeUserRole(changeUserRoleCommand: ChangeUserRoleCommand): Void
-  changeUserSpace(changeUserSpaceCommand: ChangeUserSpaceCommand): Void
-  changeUserActivity(changeUserActivityCommand: ChangeUserActivityCommand): Void
-  putCard(putCardCommand: PutCardCommand): Void
-  putLegendaryCard(putLegendaryCardCommand: PutLegendaryCardCommand): Void
+  changeUserPassword(changePasswordCommand: ChangePasswordCommand!): Void
+  changeUserEmail(changeEmailCommand: ChangeEmailCommand!): Void
+  updateUser(updateUserCommand: UpdateUserCommand!): User!
+  changeUserRole(changeUserRoleCommand: ChangeUserRoleCommand!): Void
+  changeUserSpace(changeUserSpaceCommand: ChangeUserSpaceCommand!): Void
+  changeUserActivity(changeUserActivityCommand: ChangeUserActivityCommand!): Void
+  putCard(putCardCommand: PutCardCommand!): Void
+  putLegendaryCard(putLegendaryCardCommand: PutLegendaryCardCommand!): Void
 }

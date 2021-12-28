@@ -1,4 +1,4 @@
-import { RarityType } from 'root/domain';
+import { RarityType } from '../../../interfaces';
 import { Card } from '../../Card';
 import { getCard, getLegendaryCard } from '../fixtures';
 

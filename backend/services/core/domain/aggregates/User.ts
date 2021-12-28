@@ -1,5 +1,5 @@
-import { BaseEntity } from 'services/core/domain/aggregates/BaseEntity';
-import { IRole, IUser } from 'root/domain';
+import { BaseEntity } from './BaseEntity';
+import { IUser } from '../interfaces';
 import { Wallet } from './Wallet';
 import { Deck } from './Deck';
 import { Role, CreateRoleParam } from './Role';
@@ -29,7 +29,7 @@ export class User implements BaseEntity<IUser> {
   private _phone?: string;
   private created: Date;
   private updated: Date;
-  private _spaceId: string;
+  private _spaceId?: string;
   private _role: Role;
   private _coins: Wallet;
   private deck: Deck;

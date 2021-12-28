@@ -1,5 +1,5 @@
-import { ISpace } from 'root/domain';
-import { BaseEntity } from 'services/core/domain/aggregates/BaseEntity';
+import { ISpace } from '../interfaces';
+import { BaseEntity } from './BaseEntity';
 import { DustStorage } from './DustStorage';
 import { CreateWalletParam } from './Wallet';
 
@@ -7,16 +7,19 @@ type CreateSpaceParam = Omit<ISpace, 'dust'> & { dust: CreateWalletParam };
 
 export class Space extends DustStorage implements BaseEntity<ISpace> {
   private id: string;
-  private name: string;
+  private _name: string;
   private active: boolean;
   constructor({ active, dust, id, name }: CreateSpaceParam) {
     super(dust);
     this.id = id;
-    this.name = name;
+    this._name = name;
     this.active = active;
   }
   public deactivate() {
     this.active = false;
+  }
+  public activate() {
+    this.active = true;
   }
   public isActive() {
     return this.active;
@@ -24,9 +27,12 @@ export class Space extends DustStorage implements BaseEntity<ISpace> {
   public getView() {
     return {
       id: this.id,
-      name: this.name,
+      name: this._name,
       dust: this.dust.getView(),
       active: this.active,
     };
+  }
+  set name(name: string) {
+    this._name = name;
   }
 }

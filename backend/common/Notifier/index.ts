@@ -1,12 +1,11 @@
-import { NotifierService, IParamsSendEmail } from '../../services/core/domain/ports/output/notifier.service';
-import * as nodemailer from 'nodemailer';
-import * as Mail from 'nodemailer/lib/mailer';
+import type { NotifierService, IParamsSendEmail } from 'services/core/domain/ports/output/notifier.service';
+import * as Mail from 'nodemailer';
 import { injectable } from 'inversify';
 import { ConfigurableService } from '../ConfigurableService';
 
 @injectable()
 export class Notifier extends ConfigurableService implements NotifierService {
-  private MailService: Mail;
+  private MailService: Mail.Transporter;
   private smtpServerHost: string;
   private smtpServerUsername: string;
   private smtpServerPassword: string;
@@ -18,7 +17,7 @@ export class Notifier extends ConfigurableService implements NotifierService {
     this.smtpServerPassword = this.getSettingFromEnv('SMTP_SERVER_PASSWORD');
     this.smtpServerPort = this.castToNumber(this.getSettingFromEnv('SMTP_SERVER_PORT'));
 
-    this.MailService = nodemailer.createTransport({
+    this.MailService = Mail.createTransport({
       host: this.smtpServerHost,
       port: this.smtpServerPort,
       auth: {

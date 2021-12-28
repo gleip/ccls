@@ -1,19 +1,21 @@
 import 'reflect-metadata';
 import { Container } from 'inversify';
-import { LoggerService, Logger } from '../../common/Logger';
 import { TYPES } from './inversify.types';
-import { AuthToolkit } from '../../common/AuthToolkit';
-import { AuthToolkitService } from './domain/ports/output/authToolkit.service';
-import { UserService } from './domain/services/User.service';
-import { CardGenerator } from './domain/ports/output/cardGenerator.service';
-import { Toolkit } from '../../common/Toolkit';
-import { ToolkitService } from './domain/ports/output/toolkit.service';
-import { CoreRepository } from './domain/ports/output/core.repository';
-import { NotifierService } from './domain/ports/output/notifier.service';
-import { Notifier } from '../../common/Notifier';
-import { Repository } from '../../services/core/repository';
 
-const container = new Container({ defaultScope: 'Singleton' });
+import type { AuthToolkitService } from './domain/ports/output/authToolkit.service';
+import type { CardGenerator } from './domain/ports/output/cardGenerator.service';
+import type { ToolkitService } from './domain/ports/output/toolkit.service';
+import type { CoreRepository } from './domain/ports/output/core.repository';
+import type { NotifierService } from './domain/ports/output/notifier.service';
+
+import { UserService } from './domain/services/User.service';
+import { LoggerService, Logger } from 'common/Logger';
+import { AuthToolkit } from 'common/AuthToolkit';
+import { Notifier } from 'common/Notifier';
+import { Toolkit } from 'common/Toolkit';
+import { Repository } from './repository';
+
+const container = new Container({ defaultScope: 'Singleton', skipBaseClassChecks: true });
 
 container.bind<UserService>(TYPES.UserService).to(UserService);
 container.bind<CoreRepository>(TYPES.CoreRepository).to(Repository);

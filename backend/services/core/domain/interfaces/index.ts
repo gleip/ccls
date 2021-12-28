@@ -58,7 +58,7 @@ export interface IUser {
   avatar?: string;
   email: string;
   phone?: string;
-  spaceId: string;
+  spaceId?: string;
   coins: IWallet;
   deck: IDeck;
   created: Date;
@@ -72,6 +72,6 @@ export interface IAuth {
 }
 
 export interface IGenerateAuthResult {
-  refresh: string;
+  refreshKey: string;
   auth: IAuth;
 }

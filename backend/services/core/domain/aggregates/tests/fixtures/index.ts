@@ -1,4 +1,4 @@
-import { RarityType, RoleType } from 'root/domain';
+import { RarityType, RoleType } from '../../../interfaces';
 
 export const getRole = (type: RoleType = RoleType.Employee, amount: number = 1000) => ({
   id: '1',

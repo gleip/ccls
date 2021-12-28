@@ -1,4 +1,4 @@
-import { IRole } from 'root/domain';
+import { IRole } from '../../interfaces';
 
 /**
  * Команда на изменение количества "пыли" у "роли"

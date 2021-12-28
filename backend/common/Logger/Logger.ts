@@ -8,7 +8,7 @@ export class Logger implements LoggerService {
   constructor() {
     this.pino = pino({
       safe: true,
-      level: (process.env.LOGLEVEL || 'info').toString(),
+      level: process.env.LOGLEVEL || 'info'
     });
   }
   debug(...args: any[]) {

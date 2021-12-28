@@ -1,4 +1,4 @@
-import { LoggerService } from '../common/Logger/LoggerService.interface';
+import { LoggerService } from '../Logger/LoggerService.interface';
 
 export function errorHandler(message: string) {
   return function methodDecorator(

@@ -1,4 +1,5 @@
-import { ICard } from 'root/domain';
+import { ICard } from '../../interfaces';
+import { Pagination } from './user';
 
 /**
  *  Команда на добавление "легендарной карты" в ростер
@@ -13,4 +14,4 @@ export type DeleteLegendaryCard = Pick<ICard, 'id'>;
 /**
  * Запрос на получение списка достпупных для покупки "легендарных карт"
  */
-export type GetLegendaryCardsList = {};
+export type GetLegendaryCardsList = Pagination;

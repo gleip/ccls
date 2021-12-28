@@ -1,5 +1,5 @@
-import { IDeck } from 'root/domain';
-import { BaseEntity } from 'services/core/domain/aggregates/BaseEntity';
+import { IDeck } from '../interfaces';
+import { BaseEntity } from './BaseEntity';
 import { Card } from './Card';
 
 export class Deck implements BaseEntity<IDeck> {

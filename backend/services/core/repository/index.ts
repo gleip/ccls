@@ -3,13 +3,14 @@ import { CoreRepository } from '../domain/ports/output/core.repository';
 import { MongoClient, Collection } from 'mongodb';
 import { ConfigurableService } from '../../../common/ConfigurableService';
 import { TYPES } from '../inversify.types';
-import { LoggerService } from '../../../common/Logger/LoggerService.interface';
+import { LoggerService } from 'common/Logger/LoggerService.interface';
 import { Card, Role, Space, User } from '../domain/aggregates';
-import { ICard, IRole, ISpace, IUser } from 'root/domain';
+import { ICard, IRole, ISpace, IUser } from 'services/core/domain/interfaces';
 import { IPassword } from '../domain/aggregates/User';
 import { Pagination } from '../domain/ports/input/user';
-import { RoleType } from 'root/domain';
-import { errorHandler } from '../../../decorators/errorHandler';
+import { RoleType } from 'services/core/domain/interfaces';
+import { errorHandler } from 'common/decorators/errorHandler';
+import * as crypto from 'crypto';
 
 interface UserSystemInfo {
   refreshKey: string;
@@ -36,7 +37,7 @@ export class Repository extends ConfigurableService implements CoreRepository {
     super();
     const uri = this.getSettingFromEnv('MONGODB_URI');
     this.dbName = this.getSettingFromEnv('MONGODB_DB_NAME');
-    this.client = new MongoClient(uri);
+    this.client = new MongoClient(uri, { ignoreUndefined: true });
     this.userCollection = this.client.db(this.dbName).collection('users');
     this.spaceCollection = this.client.db(this.dbName).collection('spaces');
     this.roleCollection = this.client.db(this.dbName).collection('roles');
@@ -58,6 +59,16 @@ export class Repository extends ConfigurableService implements CoreRepository {
       this.logger.fatal('Не удалось подключиться к mongodb', error);
     }
   }
+
+  public getId() {
+    return crypto.randomUUID();
+  }
+
+  @errorHandler('Не удалось создать базовые роли')
+  public async createBaseRoles(roles: Role[]) {
+    await this.roleCollection.insertMany(roles.map(role => ({ ...role.getView(), revision: 1 })));
+  }
+
   @errorHandler('Не удалось сохранить пользователя')
   public async putUser(user: User) {
     const revision = this.revisions.get(user);
@@ -73,7 +84,15 @@ export class Repository extends ConfigurableService implements CoreRepository {
     }
     await this.userCollection.updateOne(
       { id: user.id, revision },
-      { $set: { ...user.getView(), revision: revision + 1 } },
+      {
+        $set: {
+          ...user.getView(),
+          password: user.password,
+          refreshKey: '',
+          verificationCode: '',
+          revision: revision + 1,
+        },
+      },
     );
   }
   @errorHandler('Не удалось сохранить ключ для обновления токена')
@@ -161,7 +180,7 @@ export class Repository extends ConfigurableService implements CoreRepository {
       this.revisions.set(role, roleDocument.revision);
       return role;
     }
-    throw new Error(`Роли с типом ${type} не найденно`);
+    return null;
   }
   @errorHandler('Не удалось получить роль')
   public async getRoleById(id: string) {

@@ -1,4 +1,5 @@
-import { ISpace } from 'root/domain';
+import { ISpace } from '../../interfaces';
+import { Pagination } from './user';
 
 /**
  * Команда на создание "пространства"
@@ -16,14 +17,9 @@ export type Change = Pick<ISpace, 'id'> & Partial<Pick<ISpace, 'name' | 'dust'>>
 export type ChangeSpaceActivity = Pick<ISpace, 'id' | 'active'>;
 
 /**
- * Команда на изменение количества "пыли" у "пространства"
- */
-export type ChangeDust = Pick<ISpace, 'id' | 'dust'>;
-
-/**
  * Запрос на получение списка существующих "пространств"
  */
-export type GetSpacesList = Partial<Pick<ISpace, 'name'>>;
+export type GetSpacesList = Pagination;
 
 /**
  * Запрос на получение "пространства"

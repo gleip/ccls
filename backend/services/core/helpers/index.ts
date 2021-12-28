@@ -1,4 +1,5 @@
 import { GraphQLScalarType, Kind } from 'graphql';
+import { Credentials, RefreshTokenCredentials, UserCredentials } from '../domain/ports/output/authToolkit.service';
 
 export const Void = new GraphQLScalarType({
   name: 'Void',
@@ -20,3 +21,17 @@ export const customScalarDate = new GraphQLScalarType({
     return null;
   },
 });
+
+export const isRefreshTokenCredentials = (credentials?: Credentials): credentials is RefreshTokenCredentials => {
+  if (!credentials) {
+    return false;
+  }
+  return !!(credentials as RefreshTokenCredentials).refreshKey;
+};
+
+export const isUserCredentials = (credentials?: Credentials): credentials is UserCredentials => {
+  if (!credentials) {
+    return false;
+  }
+  return !!(credentials as UserCredentials).id;
+};

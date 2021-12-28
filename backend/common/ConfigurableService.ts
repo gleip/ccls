@@ -1,6 +1,3 @@
-type AvailableTypes = 'number' | 'string';
-type Result<T extends AvailableTypes> = T extends 'number' ? number : string;
-
 export class ConfigurableService {
   protected castToNumber(value: string) {
     const result = +value;

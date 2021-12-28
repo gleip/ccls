@@ -1,4 +1,4 @@
-import { RoleType } from 'root/domain';
+import { RoleType } from '../../../interfaces';
 import { Role } from '../../Role';
 import { getRole } from '../fixtures';
 

@@ -1,8 +1,12 @@
 import * as jsonwebtoken from 'jsonwebtoken';
 import { injectable } from 'inversify';
 import { promisify } from 'util';
-import { AuthToolkitService, IHashedInfo } from '../../services/core/domain/ports/output/authToolkit.service';
-import { User } from '../../services/core/domain/aggregates/User';
+import type {
+  AuthToolkitService,
+  Credentials,
+  IHashedInfo,
+} from 'services/core/domain/ports/output/authToolkit.service';
+import type { User } from 'services/core/domain/aggregates/User';
 import { pbkdf2, randomBytes, randomUUID } from 'crypto';
 import { ConfigurableService } from '../ConfigurableService';
 
@@ -29,20 +33,32 @@ export class AuthToolkit extends ConfigurableService implements AuthToolkitServi
       algorithm: this.jwtAlgorithm,
       expiresIn: this.JWT_TOKEN_TTL_IN_SECOND,
     });
-    const refresh = randomUUID();
+    const refreshKey = randomUUID();
     const expired = new Date();
     expired.setSeconds(expired.getSeconds() + this.JWT_TOKEN_TTL_IN_SECOND);
     return {
-      refresh,
+      refreshKey,
       auth: {
         token,
-        refreshToken: jsonwebtoken.sign({ refresh }, this.JWT_TOKEN_SECRET, {
+        refreshToken: jsonwebtoken.sign({ refreshKey }, this.JWT_TOKEN_SECRET, {
           algorithm: this.jwtAlgorithm,
           expiresIn: this.REFRESH_TOKEN_TTL_IN_SECOND,
         }),
         expired,
       },
     };
+  }
+  public async verifyJwtToken(token: string) {
+    return new Promise<Credentials>((resolve, reject) => {
+      jsonwebtoken.verify(token, this.JWT_TOKEN_SECRET, (error, payload) => {
+        const notValidPayload = error || !payload || !payload.exp;
+        const expired = payload?.exp! * 1000 < Date.now();
+        if (notValidPayload || expired) {
+          return reject();
+        }
+        resolve(payload as Credentials);
+      });
+    });
   }
   private getString(value: Buffer) {
     return value.toString('hex');

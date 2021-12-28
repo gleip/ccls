@@ -1,5 +1,5 @@
 import { User } from '../../User';
-import { RoleType } from 'root/domain';
+import { RoleType } from '../../../interfaces';
 import { Card } from '../../Card';
 import { Role } from '../..';
 import { getRegisterUser, getCard, getViewUser, getUserFromCollection } from '../fixtures';

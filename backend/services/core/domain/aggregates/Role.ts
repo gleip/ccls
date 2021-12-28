@@ -1,5 +1,5 @@
-import { IRole, RoleType } from 'root/domain';
-import { BaseEntity } from 'services/core/domain/aggregates/BaseEntity';
+import { IRole, RoleType } from '../interfaces';
+import { BaseEntity } from './BaseEntity';
 import { DustStorage } from './DustStorage';
 import { CreateWalletParam } from './Wallet';
 

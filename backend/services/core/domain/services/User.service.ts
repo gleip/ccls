@@ -1,11 +1,11 @@
-import { AuthToolkitService } from '../ports/output/authToolkit.service';
-import { ToolkitService } from '../ports/output/toolkit.service';
 import { inject, injectable } from 'inversify';
 import { TYPES } from '../../inversify.types';
-import { User, Role, Space } from '../aggregates';
-import { RoleType } from 'root/domain';
+import { User, Space, Role } from '../aggregates';
+import { RoleType } from '../interfaces';
 
 // Ports
+import { AuthToolkitService } from '../ports/output/authToolkit.service';
+import { ToolkitService } from '../ports/output/toolkit.service';
 import {
   Register,
   SendVerificationCode,
@@ -51,17 +51,52 @@ export class UserService {
   ) {}
 
   private async getAuthInfo(user: User) {
-    const { auth, refresh } = this.authService.getAuthInfo(user);
-    await this.repository.setUserRefreshKey(user.id, refresh);
+    const { auth, refreshKey } = this.authService.getAuthInfo(user);
+    await this.repository.setUserRefreshKey(user.id, refreshKey);
     return auth;
+  }
+
+  private async initRoleSystem() {
+    const initialDustAmount = {
+      amount: 0,
+    };
+    const administrator = new Role({
+      id: this.repository.getId(),
+      type: RoleType.Administrator,
+      name: 'Администратор',
+      dust: initialDustAmount,
+    });
+    const manager = new Role({
+      id: this.repository.getId(),
+      type: RoleType.Manager,
+      name: 'Менеджер',
+      dust: initialDustAmount,
+    });
+    const employee = new Role({
+      id: this.repository.getId(),
+      type: RoleType.Employee,
+      name: 'Сотрудник',
+      dust: initialDustAmount,
+    });
+    await this.repository.createBaseRoles([administrator, manager, employee]);
+    return administrator;
   }
 
   public async register({ password, ...userInfo }: Register) {
     const existUser = await this.repository.getUserByEmail(userInfo.email);
-    if (existUser) {
+    if (!this.toolkit.entityIsNotExist(existUser)) {
       throw new Error(this.errors.USER_EXIST);
     }
-    const role = await this.repository.getRoleByType(RoleType.Employee);
+    let role = await this.repository.getRoleByType(RoleType.Employee);
+    if (this.toolkit.entityIsNotExist(role)) {
+      role = await this.initRoleSystem();
+    }
+    if (userInfo.spaceId) {
+      const space = await this.repository.getSpaceById(userInfo.spaceId);
+      if (this.toolkit.entityIsNotExist(space)) {
+        throw new Error(this.errors.SPACE_NOT_FOUD);
+      }
+    }
     const user = User.create({ ...userInfo, role: role.getView() });
     const hashedPassword = await this.authService.getHash(password);
     user.password = hashedPassword;

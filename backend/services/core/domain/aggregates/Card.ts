@@ -1,5 +1,5 @@
-import { RarityType, ICard } from 'root/domain';
-import { BaseEntity } from 'services/core/domain/aggregates/BaseEntity';
+import { RarityType, ICard } from '../interfaces';
+import { BaseEntity } from './BaseEntity';
 
 export class Card implements BaseEntity<ICard> {
   private id: string;

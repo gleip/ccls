@@ -1,8 +1,8 @@
-import { RarityType, RoleType } from 'root/domain';
+import { RarityType, RoleType } from '../../interfaces';
 import { container, TYPES } from '../../../inversify.config';
 import { Card, Role, Space, User } from '../../aggregates';
 import { getCard, getRegisterUser, getRole, getSpace, getUserFromCollection } from '../../aggregates/tests/fixtures';
-import { UserService } from '../User.service';
+import type { UserService } from '../User.service';
 
 describe('Сервис "Пользователи"', () => {
   beforeEach(() => {
@@ -56,11 +56,16 @@ describe('Сервис "Пользователи"', () => {
     repository.setUserRefreshKey.mockResolvedValue('Ok');
 
     test('"Пользователь" успешно регистрируется и получает авторизационную информацию', async () => {
+      repository.getSpaceById.mockResolvedValue(new Space(getSpace()));
       const result = await userService.register({ ...getRegisterUser(), password: 'qwerty' });
       expect(result).toMatchObject(auth);
     });
-    test('Если пользователь пытается зарегестрироваться в системе с email, который уже зарегестрирован, вобрасывается ошибка', async () => {
+    test('Если "Пользователь" пытается зарегестрироваться в системе с email, который уже зарегестрирован, вобрасывается ошибка', async () => {
       repository.getUserByEmail.mockResolvedValue(new User(getUserFromCollection()));
+      expect(userService.register({ ...getRegisterUser(), password: 'qwerty' })).rejects.toThrowError();
+    });
+    test('Если "Пользователь" пытается зарегестрироваться в системе с несуществующем "Пространством", выбрасывается ошибка', async () => {
+      repository.getSpaceById.mockResolvedValue(null);
       expect(userService.register({ ...getRegisterUser(), password: 'qwerty' })).rejects.toThrowError();
     });
     test('"Пользователь" успешно получает авторизационную информацию по email и паролю', async () => {

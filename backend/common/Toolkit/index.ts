@@ -1,6 +1,6 @@
-import { BaseEntity } from 'services/core/domain/aggregates/BaseEntity';
+import type { BaseEntity } from 'services/core/domain/aggregates/BaseEntity';
 import { injectable } from 'inversify';
-import { ToolkitService } from '../../services/core/domain/ports/output/toolkit.service';
+import type { ToolkitService } from 'services/core/domain/ports/output/toolkit.service';
 
 @injectable()
 export class Toolkit implements ToolkitService {

@@ -1,5 +1,4 @@
-import { ICard, IUser } from 'root/domain';
-import { CreateRoleParam } from '../../aggregates/Role';
+import { ICard, IUser } from '../../interfaces';
 
 interface Password {
   password: string;
@@ -54,7 +53,7 @@ export type ChangeRole = Pick<IUser, 'id'> & { roleId: string };
 /**
  * Команда на изменение "пространства" "пользователя"
  */
-export type ChangeSpace = Pick<IUser, 'id' | 'spaceId'>;
+export type ChangeSpace = Pick<IUser, 'id'> & Required<Pick<IUser, 'spaceId'>>;
 
 /**
  * Команда на выход "пользователя" из системы

@@ -4,11 +4,16 @@
   "description": "Коллекционная карточная система лояльности",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "buildBackend": "npm run clear && npm run genBackendGqlTypes && npm run transpile && npm run copyGqlSchema",
+    "clear": "rm -rf ./backend/dist",
+    "genBackendGqlTypes": "cd ./backend && npm run genGqlTypes",
+    "transpile": "./node_modules/.bin/tsc -b ./backend",
+    "copyGqlSchema": "./node_modules/.bin/copyfiles -f ./backend/services/core/schemas/* ./backend/dist/services/core/schemas"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "copyfiles": "^2.4.1",
     "typescript": "^4.4.4"
   }
 }

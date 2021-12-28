@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { AuthToolkit } from '.';
-import { User } from '../../services/core/domain/aggregates/User';
-import { RoleType } from 'root/domain';
+import { User } from 'services/core/domain/aggregates/User';
+import { RoleType } from 'services/core/domain/interfaces';
 import * as jsonwebtoken from 'jsonwebtoken';
 
 describe('Генерация хешей, объектов авторизации и кодов подтверждения', () => {
@@ -42,7 +42,7 @@ describe('Генерация хешей, объектов авторизации
       }),
     );
     test('Успешно генерируется ключ для переполучения токена авторизации', () => {
-      expect(authUserInfo.refresh).not.toBeUndefined();
+      expect(authUserInfo.refreshKey).not.toBeUndefined();
     });
     test('В токене зашифрованны необходимые данные для авторизации пользователя', () => {
       const data = jsonwebtoken.decode(authUserInfo.auth.token);
@@ -59,7 +59,7 @@ describe('Генерация хешей, объектов авторизации
     });
     test('В refresh токене хранится ключ для перевыпуска токена авторизации пользователя', () => {
       const data = jsonwebtoken.decode(authUserInfo.auth.refreshToken);
-      expect(data).toMatchObject({ refresh: authUserInfo.refresh });
+      expect(data).toMatchObject({ refreshKey: authUserInfo.refreshKey });
     });
   });
 

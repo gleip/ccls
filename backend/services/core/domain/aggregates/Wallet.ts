@@ -1,4 +1,4 @@
-import { IWallet } from 'root/domain';
+import { IWallet } from '../interfaces';
 import { BaseEntity } from './BaseEntity';
 
 export type CreateWalletParam = Pick<IWallet, 'amount'> & Partial<Pick<IWallet, 'updated'>>;

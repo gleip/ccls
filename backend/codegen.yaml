@@ -1,0 +1,8 @@
+schema: "./services/core/schemas/**/*.graphql"
+generates:
+  ./services/core/schemas/graphqlApiTypes.d.ts:
+    plugins:
+      - typescript
+      - typescript-resolvers
+    config:
+      maybeValue: T | undefined
